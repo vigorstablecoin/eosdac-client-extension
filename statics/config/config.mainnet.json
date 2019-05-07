@@ -1,10 +1,10 @@
 {
-    "DAC_name": "eosDAC",
+    "DAC_name": "DAC",
     "contracts": {
         
         "token": {
-            "name": "eosdactokens",
-            "symbol": "EOSDAC",
+            "name": "dactoken1111",
+            "symbol": "VIG",
             "totalSupply": 1000000000.0000,
             "decimals": 4
         },
@@ -14,8 +14,8 @@
             "decimals": 4
         },
         "custodian": {
-            "name": "daccustodian",
-            "memo": "daccustodian",
+            "name": "daccustodia1",
+            "memo": "daccustodia1",
             "enable_voting" : true
         },
         "bot":{
@@ -25,13 +25,13 @@
             "name": "eosio.msig"
         },
         "dac_msig": {
-            "name": "dacmultisigs"
+            "name": "dacmultisig1"
         },        
         "wpproposal":{
             "name": "dacproposals"
         },
         "escrow":{
-            "name": "eosdacescrow"
+            "name": "dacholding11"
         }
 
     },
@@ -41,29 +41,29 @@
         "name": "eosdacserver"
     },
     "treasuryAccount":{
-        "name": "eosdacthedac"
+        "name": "dacholding11"
     },
 
     "authAccount": {
-        "name": "dacauthority",
+        "name": "dacauth11111",
         "controlling": [
             {
-                "name":"eosdacthedac", 
+                "name":"dacholding11", 
                 "linkedAuths": [
                     {"contract": "eosio.token", "action": "transfer", "permission": "xfer", "label": "Transfer EOS"}
                 ]
             },
             {
-                "name":"daccustodian", 
+                "name":"daccustodia1", 
                 "linkedAuths": [
-                    {"contract": "eosdactokens", "action": "transfer", "permission": "xfer", "label": "Transfer EOSDAC"}
+                    {"contract": "dactoken1111", "action": "transfer", "permission": "xfer", "label": "Transfer VIG"}
                 ]
             },
             {
-                "name":"dacauthority", 
+                "name":"dacauth11111", 
                 "linkedAuths":[
-                    {"contract": "daccustodian", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
-                    {"contract": "daccustodian", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
+                    {"contract": "daccustodia1", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
+                    {"contract": "daccustodia1", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
                 ]
             }
         ]
@@ -73,7 +73,7 @@
         "default_eos_node": "https://proxy.eosnode.tools:443",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "https://toolkit-api.eosdac.io",
-        "memberclient_state_api": "https://api.eosdac.io/v1/eosdac",
+        "memberclient_state_api": "https://dac.eosusd.com:8382/v1/eosdac",
         "firehose": "ws://bos.eosdac.io:1337"
     },
 
