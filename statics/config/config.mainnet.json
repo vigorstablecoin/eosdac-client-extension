@@ -73,7 +73,7 @@
         "default_eos_node": "https://proxy.eosnode.tools:443",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "https://toolkit-api.eosdac.io",
-        "memberclient_state_api": "https://dac.eosusd.com:8382/v1/eosdac",
+        "memberclient_state_api": "https://api-dac.eosusd.com/v1/eosdac",
         "firehose": "ws://bos.eosdac.io:1337"
     },
 
