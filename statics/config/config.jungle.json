@@ -2,8 +2,8 @@
     "DAC_name": "eosDAC",
     "contracts": {
         "token": {
-            "name": "kasdactokens",
-            "symbol": "KASDAC",
+            "name": "dactoken1111",
+            "symbol": "DAC",
             "totalSupply": 1000000000.0000,
             "decimals": 4
         },
@@ -13,8 +13,8 @@
             "decimals": 4
         },
         "custodian": {
-            "name": "dacelections",
-            "memo": "dacelections",
+            "name": "daccustodia1",
+            "memo": "daccustodia1",
             "enable_voting" : true
         },
         "bot":{
@@ -24,13 +24,13 @@
             "name": "eosiomsigold"
         },
         "dac_msig": {
-            "name": "dacmultisigs"
+            "name": "dacmultisig1"
         },
         "wpproposal":{
             "name": "dacproposals"
         },
         "escrow":{
-            "name": "eosdacescrow"
+            "name": "dacholding11"
         }
           
     },
@@ -39,29 +39,29 @@
         "name": "eosdacserval"
     },
     "treasuryAccount":{
-        "name": "eosdacdoshhq"
+        "name": "dacholding11"
     },
 
     "authAccount": {
-        "name": "dacauthority",
+        "name": "dacauth11111",
         "controlling": [
             {
-                "name":"eosdacdoshhq", 
+                "name":"dacholding11", 
                 "linkedAuths": [
                     {"contract": "eosio.token", "action": "transfer", "permission": "xfer", "label": "Transfer EOS"}
                 ]
             },
             {
-                "name":"dacelections", 
+                "name":"daccustodia1", 
                 "linkedAuths": [
-                    {"contract": "kasdactokens", "action": "transfer", "permission": "xfer", "label": "Transfer KASDAC"}
+                    {"contract": "dactoken1111", "action": "transfer", "permission": "xfer", "label": "Transfer DAC"}
                 ]
             },
             {
-                "name":"dacauthority", 
+                "name":"dacauth11111", 
                 "linkedAuths":[
-                    {"contract": "dacelections", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
-                    {"contract": "dacelections", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
+                    {"contract": "daccustodia1", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
+                    {"contract": "daccustodia1", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
                 ]
             }
 
@@ -72,7 +72,7 @@
         "default_eos_node": "https://jungle2.cryptolions.io:443",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "http://ns3119712.ip-51-38-42.eu:3000",
-        "memberclient_state_api": "https://api-jungle.eosdac.io/v1/eosdac",
+        "memberclient_state_api": "http://dac.eosusd.com:8383/v1/eosdac",
         "firehose": "ws://jungle.eosdac.io:1337"
 
     },
