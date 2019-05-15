@@ -9,8 +9,8 @@
             "decimals": 4
         },
         "system_token": {
-            "name": "eosio.token",
-            "symbol": "EOS",
+            "name": "vig111111111",
+            "symbol": "VIG",
             "decimals": 4
         },
         "custodian": {
@@ -54,9 +54,9 @@
                 ]
             },
             {
-                "name":"daccustodia1", 
+                "name":"dactoken1111", 
                 "linkedAuths": [
-                    {"contract": "dactoken1111", "action": "transfer", "permission": "xfer", "label": "Transfer VIG"}
+                    {"contract": "dactoken1111", "action": "transfer", "permission": "active", "label": "Transfer VIG"}
                 ]
             },
             {
