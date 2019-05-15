@@ -1,5 +1,5 @@
 {
-    "DAC_name": "DAC",
+    "dacName": "DAC",
     "contracts": {
         
         "token": {
@@ -60,8 +60,15 @@
                 ]
             },
             {
-                "name":"dacauth11111", 
-                "linkedAuths":[
+                "name":"dactoken1111", 
+                "linkedAuths": [
+                    {"contract": "dactoken1111", "action": "newmemterms", "permission": "active", "label": "Update Constitution"}
+                ]
+            },
+            {
+                
+		"name":"dacauth11111",
+		"linkedAuths":[
                     {"contract": "daccustodia1", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
                     {"contract": "daccustodia1", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
                 ]
