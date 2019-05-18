@@ -1,5 +1,5 @@
 {
-    "dacName": "eosdac",
+    "DAC_name": "eosdac",
     "contracts": {
         "token": {
             "name": "dactoken1111",
@@ -55,12 +55,6 @@
                 "name":"daccustodia1", 
                 "linkedAuths": [
                     {"contract": "dactoken1111", "action": "transfer", "permission": "xfer", "label": "Transfer DAC"}
-                ]
-            },
-            {
-                "name":"dactoken1111", 
-                "linkedAuths": [
-                    {"contract": "dactoken1111", "action": "newmemterms", "permission": "active", "label": "Update Constitution"}
                 ]
             },
             {
