@@ -1,5 +1,6 @@
 {
-    "DAC_name": "DAC",
+    "dacName": "Vigor",
+    "dacScope": "vig",
     "contracts": {
         
         "token": {
@@ -36,38 +37,37 @@
 
     },
 
+    "accounts":{
+        "bpAccount": {
+            "name": "eosdacserver"
+        },
+        "treasuryAccount":{
+            "name": "dacholding11"
+        },
+    
+        "authAccount": {
+            "name": "dacauth11111"
+        }
+    },
 
-    "bpAccount": {
-        "name": "eosdacserver"
-    },
-    "treasuryAccount":{
-        "name": "dacholding11"
-    },
 
-    "authAccount": {
-        "name": "dacauth11111",
-        "controlling": [
-            {
-                "name":"dacholding11", 
-                "linkedAuths": [
-                    {"contract": "eosio.token", "action": "transfer", "permission": "xfer", "label": "Transfer EOS"}
-                ]
-            },
-            {
-                "name":"dactoken1111", 
-                "linkedAuths": [
-                    {"contract": "dactoken1111", "action": "transfer", "permission": "active", "label": "Transfer VIG"}
-                ]
-            },
-            {
-		"name":"dacauth11111",
-		"linkedAuths":[
-                    {"contract": "daccustodia1", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
-                    {"contract": "daccustodia1", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
-                ]
-            }
-        ]
-    },
+    "financial_page_graphs": [
+        {
+          "account": "dactoken1111",
+          "contract": "dactoken1111",
+          "symbol": "VIG",
+          "description":
+            "a description."
+        },
+        {
+            "account": "dacholding11",
+            "contract": "vig111111111",
+            "symbol": "VIG",
+            "description":
+              "a description."
+          }
+    ],
+
 
     "api": {
         "default_eos_node": "https://proxy.eosnode.tools:443",

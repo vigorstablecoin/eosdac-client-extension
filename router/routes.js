@@ -1,7 +1,7 @@
 const routes_extension = [
   {
     path: "/",
-    component: () => import("layouts/MyLayout.vue"),
+    component: () => import("layouts/dacLayout.vue"),
     children: [
       {
         path: "example",
@@ -10,10 +10,6 @@ const routes_extension = [
       {
         path: "credits",
         component: () => import("../pages/credits.vue")
-      },
-      {
-        path: "verify/:token",
-        component: () => import("../pages/verify-token")
       }
     ]
   }
