@@ -175,9 +175,7 @@
                 class="float-right"
                 color="bg2"
                 :label="$t('index.open_discord')"
-                @click.native="
-                  openURL('https://web.telegram.org/#/im?p=@eosUSDcom')
-                "
+                @click.native="openURL($configFile.get('external').telegram)"
               />
             </div>
           </div>
@@ -209,7 +207,7 @@
                 class="float-right"
                 color="bg2"
                 :label="$t('index.eosdac')"
-                @click.native="openURL($configFile.get('external').homepage)"
+                @click.native="openURL($configFile.get('external').whitepaper)"
               />
             </div>
           </div>
@@ -243,7 +241,12 @@
               class="q-mt-sm row justify-end items-center"
               style="min-height:50px"
             >
-              <q-btn class="" color="bg2" label="Visit" />
+              <q-btn
+                class=""
+                color="bg2"
+                label="Visit"
+                @click.native="openURL($configFile.get('external').homepage)"
+              />
             </div>
           </div>
         </div>

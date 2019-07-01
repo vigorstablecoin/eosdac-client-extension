@@ -78,8 +78,9 @@
     },
 
     "external":{
-        "homepage": "https://eosusd.com/eosUSD.pdf",
-        "discordUrl": "https://t.me/eosUSDcom",
+        "homepage": "https://vig.ai/vigorstablecoin.pdf",
+        "whitepaper": "https://vig.ai/vigor.pdf",
+        "telegram": "https://t.me/eosUSDcom",
         "explorer": "https://bloks.io",
         "dacexplorer": "https://explorer.eosdac.io"
     }
