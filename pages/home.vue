@@ -159,7 +159,7 @@
               <div class="q-title q-mb-lg">{{ $t("index.join_discord") }}</div>
               <div class="q-body-1 text-text2 relative-position">
                 <q-icon
-                  name="icon-social-discord-com"
+                  name="mdi-telegram"
                   size="48px"
                   class="absolute-top-left"
                 />
@@ -175,7 +175,7 @@
                 class="float-right"
                 color="bg2"
                 :label="$t('index.open_discord')"
-                @click.native="openURL($configFile.get('external').discordUrl)"
+                @click.native="openURL($configFile.get('external').telegram)"
               />
             </div>
           </div>
@@ -191,7 +191,7 @@
               <div class="q-title q-mb-lg">{{ $t("index.visit_eosdac") }}</div>
               <div class="q-body-1 text-text2 relative-position">
                 <q-icon
-                  name="icon-ui-21"
+                  name="mdi-file-document-box-multiple-outline"
                   size="48px"
                   class="absolute-top-left"
                 />
@@ -207,7 +207,7 @@
                 class="float-right"
                 color="bg2"
                 :label="$t('index.eosdac')"
-                @click.native="openURL($configFile.get('external').homepage)"
+                @click.native="openURL($configFile.get('external').whitepaper)"
               />
             </div>
           </div>
@@ -221,95 +221,31 @@
           >
             <div>
               <div class="q-title q-mb-lg">
-                {{ $t("index.subscribe_newsletter") }}
+                Homepage
               </div>
               <div class="q-body-1 text-text2 relative-position">
                 <q-icon
-                  name="icon-ui-22"
+                  name="mdi-home-variant-outline"
                   size="48px"
                   class="absolute-top-left"
                 />
                 <div
                   style="display:block;margin-left:55px;margin-top:-3px; width: calc(100% - 55px);"
                 >
-                  <q-input
-                    :dark="getIsDark"
-                    class="q-mb-xs"
-                    color="white"
-                    v-model="email_address"
-                    :stack-label="$t('index.your_email')"
-                    @focus="onsubscribemsg = ''"
-                  />
-                  <q-select
-                    color="white"
-                    :stack-label="$t('index.your_language')"
-                    @focus="onsubscribemsg = ''"
-                    :dark="getIsDark"
-                    :options="[
-                      {
-                        label:
-                          $t('lang_selector.languages.chinese') + ' - 中文',
-                        value: 'Chinese'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.english_us') +
-                          ' - English',
-                        value: 'English'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.french') + ' - Français',
-                        value: 'French'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.german') + ' - Deutsch',
-                        value: 'German'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.italian') + ' - Italiano',
-                        value: 'Italian'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.japanese') + ' - 日本語',
-                        value: 'Japanese'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.korean') + ' - 한국어',
-                        value: 'Korean'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.russian') + ' - Pусский',
-                        value: 'Russian'
-                      },
-                      {
-                        label:
-                          $t('lang_selector.languages.spanish') + ' - Español',
-                        value: 'Spanish (Mexico)'
-                      }
-                    ]"
-                    v-model="language"
-                  />
+                  Learn more about the Vigor decentralized stable coin project
+                  by visiting our homepage.
                 </div>
               </div>
             </div>
             <div
-              class="q-mt-sm row justify-between items-center"
+              class="q-mt-sm row justify-end items-center"
               style="min-height:50px"
             >
-              <span class=" q-caption q-my-md"
-                ><q-spinner v-if="loading" /> {{ onsubscribemsg }}</span
-              >
               <q-btn
                 class=""
                 color="bg2"
-                :label="$t('index.subscribe')"
-                @click="subscribeNewsletter"
+                label="Visit"
+                @click.native="openURL($configFile.get('external').homepage)"
               />
             </div>
           </div>

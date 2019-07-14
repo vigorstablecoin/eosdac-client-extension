@@ -1,5 +1,6 @@
 {
-    "DAC_name": "eosdac",
+    "dacName": "eosdac",
+    "dacScope": "vig",
     "contracts": {
         "token": {
             "name": "dactoken1111",
@@ -34,7 +35,7 @@
         }
           
     },
-
+"accounts":{
     "bpAccount": {
         "name": "eosdacserval"
     },
@@ -43,42 +44,40 @@
     },
 
     "authAccount": {
-        "name": "dacauth11111",
-        "controlling": [
-            {
-                "name":"dacholding11", 
-                "linkedAuths": [
-                    {"contract": "eosio.token", "action": "transfer", "permission": "xfer", "label": "Transfer EOS"}
-                ]
-            },
-            {
-                "name":"daccustodia1", 
-                "linkedAuths": [
-                    {"contract": "dactoken1111", "action": "transfer", "permission": "xfer", "label": "Transfer DAC"}
-                ]
-            },
-            {
-                "name":"dacauth11111", 
-                "linkedAuths":[
-                    {"contract": "daccustodia1", "action": "firecust", "permission": "med", "label": "Fire Custodian"},
-                    {"contract": "daccustodia1", "action": "firecand", "permission": "med", "label": "Fire Candidate"}
-                ]
-            }
+        "name": "dacauth11111"
+    }
+},
+"financial_page_graphs": [
+	{
+	 "account": "dacholding11",
+	 "contract":"dactoken1111",
+	 "symbol": "DAC",
+	 "description":
+	   "a description."
+	},
+	{
+	 "account": "dacholding11",
+ 	 "contract": "eosio.token",
+	 "symbol": "EOS",
+	 "description":
+	   "a description."
+	}
 
-        ]
-    },
-
+],
     "api": {
         "default_eos_node": "https://jungle2.cryptolions.io:443",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "http://ns3119712.ip-51-38-42.eu:3000",
-        "memberclient_state_api": "http://dac.eosusd.com:8383/v1/eosdac",
+        "memberclient_state_api": "https://api-jungle.vigor.ai/v1/eosdac",
         "firehose": "ws://jungle.eosdac.io:1337"
 
     },
 
     "external":{
-        "homepage": "https://eosdac.io",
-        "explorer": "https://jungle.bloks.io"
+        "homepage": "https://www.vigorstablecoin.com",
+        "whitepaper": "https://vigor.ai/vigor.pdf",
+	"telegram": "https://t.me/VIGORstablecoin",
+	"explorer": "https://bloks.io",
+	"dacexplorer": "https://explorer.eosdac.io"
     }
 }
