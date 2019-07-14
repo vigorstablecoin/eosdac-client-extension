@@ -50,15 +50,21 @@
       ref="leftdrawer"
     >
       <q-list no-border link inset-delimiter>
-        <q-item to="/your_app/app_page1">
+        <q-item to="/vigorapp/app_page1">
           <q-item-side icon="receipt" color="text2" />
           <q-item-main label="app page 1 " class="text-text1" />
         </q-item>
-        <q-item @click.native="$router.push('/')">
-          <q-item-side icon="star" color="text2" />
+        <q-item to="/vigorapp/airburn">
+          <q-item-side icon="mdi-fire" color="text2" />
           <q-item-main>
-            <q-item-tile label>VIGOR DAC</q-item-tile>
-            <q-item-tile sublabel>Go To DAC</q-item-tile>
+            <q-item-tile label>Airburn</q-item-tile>
+            <q-item-tile sublabel>Acquire VIG tokens</q-item-tile>
+          </q-item-main>
+        </q-item>
+        <q-item @click.native="$router.push('/')">
+          <q-item-side icon="mdi-account-group" color="text2" />
+          <q-item-main>
+            <q-item-tile label>Vigor DAC</q-item-tile>
           </q-item-main>
         </q-item>
       </q-list>

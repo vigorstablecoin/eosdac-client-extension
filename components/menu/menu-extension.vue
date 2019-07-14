@@ -1,8 +1,8 @@
 <template>
   <div>
-    <q-item to="/your_app">
-      <q-item-side icon="check" color="text2" />
-      <q-item-main label="Go to App" class="text-text1" />
+    <q-item to="/vigorapp">
+      <q-item-side icon="mdi-exit-to-app" color="text2" />
+      <q-item-main label="VIGOR APP" class="text-text1" />
     </q-item>
   </div>
 </template>
