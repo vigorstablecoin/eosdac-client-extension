@@ -6,10 +6,17 @@ const routes_extension = [
       {
         path: "example",
         component: () => import("../pages/example")
-      },
+      }
+    ]
+  },
+  {
+    path: "/your_app",
+    component: () => import("../layouts/appLayout.vue"),
+    children: [
+      { path: "", component: () => import("../pages/app1.vue") },
       {
-        path: "credits",
-        component: () => import("../pages/credits.vue")
+        path: "app_page1",
+        component: () => import("../pages/app1.vue")
       }
     ]
   }
