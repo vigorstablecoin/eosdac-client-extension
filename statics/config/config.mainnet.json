@@ -73,14 +73,14 @@
         "default_eos_node": "https://proxy.eosnode.tools:443",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "https://toolkit-api.eosdac.io",
-        "memberclient_state_api": "https://api-dac.vig.ai/v1/eosdac",
+        "memberclient_state_api": "https://api-dac.vigor.ai/v1/eosdac",
         "firehose": "ws://bos.eosdac.io:1337"
     },
 
     "external":{
-        "homepage": "https://vig.ai/vigorstablecoin.pdf",
-        "whitepaper": "https://vig.ai/vigor.pdf",
-        "telegram": "https://t.me/eosUSDcom",
+        "homepage": "https://www.vigorstablecoin.com",
+        "whitepaper": "https://vigor.ai/vigor.pdf",
+        "telegram": "https://t.me/VIGORstablecoin",
         "explorer": "https://bloks.io",
         "dacexplorer": "https://explorer.eosdac.io"
     }
