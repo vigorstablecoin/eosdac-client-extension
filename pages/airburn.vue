@@ -52,7 +52,7 @@
     />
     <div class="row gutter-md">
       <div class="col-xs-12 col-md-6">
-        all cycles
+        last 10 cycles
         <pre>{{ cycles }}</pre>
       </div>
       <div class="col-xs-12 col-md-6">
