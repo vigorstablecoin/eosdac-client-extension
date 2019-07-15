@@ -57,7 +57,7 @@
       color="primary"
       v-if="myclaimables.length"
     />
-    <q-btn @click="getClaimablePayments" label="refresh claims" />
+    <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
     <div class="row gutter-md">
       <div class="col-xs-12 col-md-6">
         last 10 cycles
@@ -262,6 +262,8 @@ export default {
         await this.getCycles();
         await this.getPayInPerCycle();
         this.getClaimablePayments();
+        this.$store.dispatch("user/fetchBalances");
+        this.transferamount = "";
       }
     }
   },
