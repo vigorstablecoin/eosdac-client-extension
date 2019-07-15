@@ -1,7 +1,7 @@
 <template>
   <!-- https://jungle.eosq.app/account/vigairburn12/tables?lowerBound=&scope=vigairburn12&tableName=payment -->
   <q-page class="q-pa-md">
-    <div class="bg-bg1 round-borders q-pa-md shadow-4 text-text2">
+    <!-- <div class="bg-bg1 round-borders q-pa-md shadow-4 text-text2">
       The VIG tokens are distributed via an AirBurn model. When you transfer EOS
       in to the contract ({{ contractname }}) the EOS will be burned and you'll
       be able to claim your proportional VIG amount at the next round. Each
@@ -11,14 +11,24 @@
       }}</span>
       will be proportional divided based on the amount of EOS you and other
       people have burned.
-    </div>
+    </div> -->
     <div v-if="contractSettings">
       <div>
-        Round: {{ getCurrentCycleStats.current_cycle_number }} Rounds Left:
-        {{ getCurrentCycleStats.rounds_left }}
+        Ongoing Round: {{ getCurrentCycleStats.current_cycle_number }}/{{
+          getCurrentCycleStats.rounds_left
+        }}
       </div>
-      <div>Total Burned: {{ getTotalPayInForCurrentCycle }} EOS</div>
-      <div>Current Value: {{ getCurrentVigValue }} EOS/VIG</div>
+      <div>
+        EOS BURNED IN ONGOING ROUND: {{ getTotalPayInForCurrentCycle }} EOS
+      </div>
+      <div>
+        CURRENT * EOS PER VIG RATE: {{ getCurrentVigValue }} EOS per 1 VIG
+      </div>
+      <div>
+        * THE RATE SHOWN IS NOT FINAL. The current rate is not the price you
+        will be purchasing the VIG Tokens at, the price will be determined ONLY
+        at the end of each Round.
+      </div>
     </div>
     <countdown
       v-if="contractSettings"
@@ -27,8 +37,8 @@
       @end="startNewCycle"
     >
       <template slot-scope="props">
-        <div>Round ends in:</div>
-        <div class="q-caption text-weight-light text-text2">
+        <div class="q-title">Round ends in</div>
+        <div class="text-weight-light text-text2">
           <span v-if="props.days">{{ props.days }} days, </span>
           <span v-if="props.hours">{{ props.hours }} hours, </span>
           <span v-if="props.minutes">{{ props.minutes }} minutes, </span>
@@ -56,27 +66,51 @@
           icon="mdi-fire"
           label="burn"
           color="primary"
+          size="md"
           :disabled="transferamount < getMinimumBurnAmount"
         />
       </div>
     </div>
 
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
+
     <div class="row gutter-md q-mt-md">
-      <div class="col-xs-12 col-md-6">
-        last 10 cycles
-        <pre>{{ cycles }}</pre>
+      <div class="col-xs-12 col-md-8">
+        <div class="round-borders shadow-4 overflow-hidden">
+          <table id="rounds_table" class="bg-logo">
+            <thead>
+              <tr class="q-title">
+                <th class="text-weight-light">Round Number</th>
+                <th class="text-weight-light">Total Burned EOS</th>
+                <th class="text-weight-light">VIG Value (EOS)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(cycle, index) in cycles"
+                :key="index"
+                class="animate-fade"
+              >
+                <td>{{ cycle.number }}</td>
+                <td>{{ cycle.total_payins.split(" ")[0] }}</td>
+                <td>{{ cycle.total_payins.split(" ")[0] / 100 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div class="col-xs-12 col-md-6">
-        my claims
-        <q-btn
-          class="animate-pop"
-          @click="claimPayments"
-          label="claim"
-          color="primary"
-          v-if="myclaimables.length"
-        />
-        <pre>{{ myclaimables }}</pre>
+      <div class="col-xs-12 col-md-4">
+        <div class="round-borders bg-bg1 q-pa-md shadow-4">
+          my claims
+          <q-btn
+            class="animate-pop"
+            @click="claimPayments"
+            label="claim"
+            color="primary"
+            v-if="myclaimables.length"
+          />
+          <pre>{{ myclaimables }}</pre>
+        </div>
       </div>
     </div>
   </q-page>
@@ -234,6 +268,7 @@ export default {
           c.claimable = c.cycle_number < current_roundnum;
           return c;
         });
+        claims = claims.filter(c => c.account == this.getAccountName);
         this.myclaimables = claims;
       } else {
         this.myclaimables = [];
@@ -309,4 +344,26 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="stylus">
+ @import '~variables'
+#rounds_table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+}
+#rounds_table tr{
+  background: var(--q-color-bg1);
+}
+#rounds_table th{
+  background: var(--q-color-primary);
+  height:45px;
+}
+#rounds_table td{
+  text-align: center;
+  vertical-align: middle;
+  height:45px;
+}
+
+#rounds_table tr:hover {background-color: var(--q-color-dark);}
+</style>
