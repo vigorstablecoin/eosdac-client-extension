@@ -21,8 +21,16 @@
       <div class="col-xs-12 col-md-7">
         <div
           v-if="contractSettings"
-          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo"
+          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position"
         >
+          <q-btn
+            icon="refresh"
+            @click="getCycles"
+            flat
+            :loading="loading_cycles"
+            title="Reload data"
+            class="absolute-top-right"
+          />
           <countdown
             :time="getCurrentCycleStats.ms_left"
             :emit-events="true"
@@ -59,7 +67,15 @@
             </div>
             <div class="q-mt-sm">
               CURRENT * EOS PER VIG RATE:
-              <span class="text-text1">{{ getCurrentVigValue }} EOS/1 VIG</span>
+              <span class="text-text1"
+                >{{ getCurrentVigValue.toFixed(4) }} EOS/1 VIG</span
+              >
+            </div>
+            <div class="q-mt-sm">
+              AVERAGE EOS PER VIG RATE:
+              <span class="text-text1"
+                >{{ getAverageVigValue.toFixed(4) }} EOS/1 VIG</span
+              >
             </div>
           </div>
         </div>
@@ -154,7 +170,9 @@ export default {
       cycles: [],
       myclaimables: [],
       transferamount: "",
-      NOW: new Date().getTime()
+      NOW: new Date().getTime(),
+
+      loading_cycles: false
     };
   },
   computed: {
@@ -175,6 +193,19 @@ export default {
       return (
         this.getTotalPayInForCurrentCycle /
         Number(this.contractSettings.quota_per_cycle.quantity.split(" ")[0])
+      );
+    },
+    getAverageVigValue() {
+      if (!this.cycles.length || !this.contractSettings) return 0;
+      let total = 0;
+      for (let i = 0; i < this.cycles.length; i++) {
+        let c_in = parseFloat(this.cycles[i].total_payins.split(" ")[0]);
+        total += c_in;
+      }
+      let average_in = parseFloat(total / this.cycles.length);
+      return (
+        average_in /
+        this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
       );
     },
     getEstimatedTokenAmount() {
@@ -249,6 +280,7 @@ export default {
       }
     },
     async getCycles() {
+      this.loading_cycles = true;
       let res = await this.getDacApi.eos
         .get_table_rows({
           json: true,
@@ -257,14 +289,16 @@ export default {
           table: "cycle",
           //   upper_bound: 1,
           reverse: true,
-          limit: 10
+          limit: -1
         })
         .catch(e => {
           console.log(e);
+          this.loading_cycles = false;
           return false;
         });
       if (res) {
         this.cycles = res.rows;
+        this.loading_cycles = false;
       }
     },
     async getClaimablePayments() {
