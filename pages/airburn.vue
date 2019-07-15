@@ -124,7 +124,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="(cycle, index) in cycles"
+                v-for="(cycle, index) in cycles.slice(0, show_number_cycles)"
                 :key="index"
                 class="animate-fade"
               >
@@ -136,6 +136,12 @@
               </tr>
             </tbody>
           </table>
+          <q-btn
+            label="more"
+            @click="show_number_cycles += 5"
+            class="full-width"
+            color="primary"
+          />
         </div>
       </div>
       <div class="col-xs-12 col-md-4">
@@ -168,6 +174,7 @@ export default {
       contractname: this.$configFile.configFile.contracts.airburn.name,
       contractSettings: false,
       cycles: [],
+      show_number_cycles: 10,
       myclaimables: [],
       transferamount: "",
       NOW: new Date().getTime(),
