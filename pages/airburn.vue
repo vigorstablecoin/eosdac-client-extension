@@ -17,7 +17,8 @@
         Round: {{ getCurrentCycleStats.current_cycle_number }} Rounds Left:
         {{ getCurrentCycleStats.rounds_left }}
       </div>
-      <div>Total Burned {{ getTotalPayInForCurrentCycle }} EOS</div>
+      <div>Total Burned: {{ getTotalPayInForCurrentCycle }} EOS</div>
+      <div>Current Value: {{ getCurrentVigValue }} EOS/VIG</div>
     </div>
     <countdown
       v-if="contractSettings"
@@ -38,17 +39,22 @@
 
     <!-- <pre>{{ contractSettings }}</pre> -->
     <div class="row items-center">
-      <q-input
-        :dark="getIsDark"
-        type="number"
-        v-model="transferamount"
-        color="primary-light"
-        stack-label="Amount in EOS"
-      />
-      <div>
+      <q-field :helper="getEstimatedTokenAmount">
+        <q-input
+          :dark="getIsDark"
+          type="number"
+          v-model="transferamount"
+          color="primary-light"
+          stack-label="Amount in EOS"
+          suffix="EOS"
+        />
+      </q-field>
+
+      <div class="on-right">
         <q-btn
           @click="burnEos"
-          label="send"
+          icon="mdi-fire"
+          label="burn"
           color="primary"
           :disabled="transferamount < getMinimumBurnAmount"
         />
@@ -107,7 +113,29 @@ export default {
         return this.contractSettings.accepted_token.quantity.split(" ")[0];
       }
     },
-
+    getCurrentVigValue() {
+      if (!this.contractSettings) return 0;
+      return (
+        this.getTotalPayInForCurrentCycle /
+        Number(this.contractSettings.quota_per_cycle.quantity.split(" ")[0])
+      );
+    },
+    getEstimatedTokenAmount() {
+      if (!this.contractSettings || !this.transferamount) {
+        return "input amount to burn";
+      }
+      console.log(
+        this.getTotalPayInForCurrentCycle,
+        Number(this.transferamount)
+      );
+      let price =
+        (parseFloat(this.getTotalPayInForCurrentCycle) +
+          parseFloat(this.transferamount)) /
+        parseFloat(
+          this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
+        );
+      return `estimated price ${price} EOS per VIG`;
+    },
     getCurrentCycleStats() {
       if (!this.contractSettings) return 0;
 
@@ -144,6 +172,7 @@ export default {
     startNewCycle() {
       this.NOW = new Date().getTime();
       this.getClaimablePayments();
+      this.getCycles();
     },
     //read data
     async getSettings() {
