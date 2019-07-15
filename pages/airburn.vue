@@ -50,6 +50,7 @@
       color="primary"
       v-if="myclaimables.length"
     />
+    <q-btn @click="getClaimablePayments" label="refresh claims" />
     <div class="row gutter-md">
       <div class="col-xs-12 col-md-6">
         last 10 cycles
@@ -180,8 +181,15 @@ export default {
           console.log(e);
           return false;
         });
-      if (res) {
-        this.myclaimables = res.rows;
+      if (res && res.rows.length) {
+        let current_roundnum = this.getCurrentCycleStats.current_cycle_number;
+        let claims = res.rows.map(c => {
+          c.claimable = c.cycle_number < current_roundnum;
+          return c;
+        });
+        this.myclaimables = claims;
+      } else {
+        this.myclaimables = [];
       }
     },
     async getPayInPerCycle() {
@@ -239,6 +247,7 @@ export default {
         console.log(result);
         await this.getCycles();
         await this.getPayInPerCycle();
+        this.getClaimablePayments();
       }
     }
   },
