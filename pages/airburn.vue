@@ -39,12 +39,19 @@
     <!-- <pre>{{ contractSettings }}</pre> -->
     <q-input
       :dark="getIsDark"
+      type="number"
       v-model="transferamount"
       color="primary-light"
-      stack-label="Amount EOS"
+      stack-label="Amount in EOS"
     />
-    <q-btn @click="burnEos" label="send" color="primary" />
     <q-btn
+      @click="burnEos"
+      label="send"
+      color="primary"
+      :disabled="transferamount < getMinimumBurnAmount"
+    />
+    <q-btn
+      class="animate-pop"
       @click="claimPayments"
       label="claim"
       color="primary"
@@ -88,6 +95,13 @@ export default {
       getIsDark: "ui/getIsDark",
       getAccountName: "user/getAccountName"
     }),
+    getMinimumBurnAmount() {
+      if (!this.contractSettings) {
+        return 9999999999;
+      } else {
+        return this.contractSettings.accepted_token.quantity.split(" ")[0];
+      }
+    },
 
     getCurrentCycleStats() {
       if (!this.contractSettings) return 0;
@@ -235,7 +249,7 @@ export default {
           data: {
             from: this.getAccountName,
             to: this.contractname,
-            quantity: this.transferamount,
+            quantity: this.transferamount.toFixed(4) + " EOS",
             memo: ""
           }
         }
