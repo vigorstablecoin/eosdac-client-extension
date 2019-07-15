@@ -17,11 +17,11 @@
 
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
 
-    <div class="row gutter-md">
+    <div class="row gutter-md q-mt-sm">
       <div class="col-xs-12 col-md-7">
         <div
           v-if="contractSettings"
-          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position"
+          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position animate-fade"
         >
           <q-btn
             icon="refresh"
@@ -31,33 +31,40 @@
             title="Reload data"
             class="absolute-top-right"
           />
-          <countdown
-            :time="getCurrentCycleStats.ms_left"
-            :emit-events="true"
-            @end="startNewCycle"
+          <div
+            class="bg-primary q-pa-sm round-borders"
+            style="display:inline-block; margin-top:-70px"
           >
-            <template slot-scope="props">
-              <div
-                class="q-title text-weight-light round-borders"
-                style="display:inline-block"
-              >
-                <span><q-icon name="mdi-timer" /> Round </span>
-                <span class="text-weight-bold">{{
-                  getCurrentCycleStats.current_cycle_number
-                }}</span>
-                <span class="">/{{ getCurrentCycleStats.rounds_left }}</span>
-                <span> ends in </span>
-              </div>
-              <div class="text-weight-light text-text2 q-display-1">
-                <!-- <span >{{ props.days }} days, </span> -->
+            <countdown
+              :time="getCurrentCycleStats.ms_left"
+              :emit-events="true"
+              @end="startNewCycle"
+            >
+              <template slot-scope="props">
+                <div
+                  class="q-title text-weight-light round-borders"
+                  style="display:inline-block"
+                >
+                  <span><q-icon name="mdi-timer" /> Round </span>
+                  <span class="text-weight-bold">{{
+                    getCurrentCycleStats.current_cycle_number
+                  }}</span>
+                  <span class="">/{{ getCurrentCycleStats.rounds_left }}</span>
+                  <span> ends in </span>
+                </div>
+                <div class="text-weight-light text-text2 q-display-1">
+                  <!-- <span >{{ props.days }} days, </span> -->
 
-                <span v-if="props.days">{{ props.days }} days, </span>
-                <span v-if="props.hours">{{ props.hours }} hours, </span>
-                <span v-if="props.minutes">{{ props.minutes }} minutes, </span>
-                <span>{{ props.seconds }} seconds</span>
-              </div>
-            </template>
-          </countdown>
+                  <span v-if="props.days">{{ props.days }} days, </span>
+                  <span v-if="props.hours">{{ props.hours }} hours, </span>
+                  <span v-if="props.minutes"
+                    >{{ props.minutes }} minutes,
+                  </span>
+                  <span>{{ props.seconds }} seconds</span>
+                </div>
+              </template>
+            </countdown>
+          </div>
           <div class="text-text2">
             <div class="q-mt-md">
               EOS BURNED IN ONGOING ROUND:
