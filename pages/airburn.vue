@@ -124,17 +124,16 @@ export default {
       if (!this.contractSettings || !this.transferamount) {
         return "input amount to burn";
       }
-      console.log(
-        this.getTotalPayInForCurrentCycle,
-        Number(this.transferamount)
-      );
+
       let price =
         (parseFloat(this.getTotalPayInForCurrentCycle) +
           parseFloat(this.transferamount)) /
         parseFloat(
           this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
         );
-      return `estimated price ${price} EOS per VIG`;
+      return `estimated token amount ${Math.round(
+        this.transferamount / price
+      )} VIG`;
     },
     getCurrentCycleStats() {
       if (!this.contractSettings) return 0;
