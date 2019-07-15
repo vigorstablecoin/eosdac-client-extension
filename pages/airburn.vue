@@ -21,28 +21,28 @@
       <div class="col-xs-12 col-md-7">
         <div
           v-if="contractSettings"
-          class="round-border shadow-4 bg-bg1 q-pa-md"
+          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo"
         >
-          <div>
-            Ongoing Round: {{ getCurrentCycleStats.current_cycle_number }}/{{
-              getCurrentCycleStats.rounds_left
-            }}
-          </div>
-          <div>
-            EOS BURNED IN ONGOING ROUND: {{ getTotalPayInForCurrentCycle }} EOS
-          </div>
-          <div>
-            CURRENT * EOS PER VIG RATE: {{ getCurrentVigValue }} EOS per 1 VIG
-          </div>
-
           <countdown
             :time="getCurrentCycleStats.ms_left"
             :emit-events="true"
             @end="startNewCycle"
           >
             <template slot-scope="props">
-              <div class="q-title">Round ends in</div>
-              <div class="text-weight-light text-text2">
+              <div
+                class="q-title text-weight-light round-borders"
+                style="display:inline-block"
+              >
+                <span><q-icon name="mdi-timer" /> Round </span>
+                <span class="text-weight-bold">{{
+                  getCurrentCycleStats.current_cycle_number
+                }}</span>
+                <span class="">/{{ getCurrentCycleStats.rounds_left }}</span>
+                <span> ends in </span>
+              </div>
+              <div class="text-weight-light text-text2 q-display-1">
+                <!-- <span >{{ props.days }} days, </span> -->
+
                 <span v-if="props.days">{{ props.days }} days, </span>
                 <span v-if="props.hours">{{ props.hours }} hours, </span>
                 <span v-if="props.minutes">{{ props.minutes }} minutes, </span>
@@ -50,8 +50,20 @@
               </div>
             </template>
           </countdown>
+          <div class="text-text2">
+            <div class="q-mt-md">
+              EOS BURNED IN ONGOING ROUND:
+              <span class="text-text1"
+                >{{ getTotalPayInForCurrentCycle }} EOS</span
+              >
+            </div>
+            <div class="q-mt-sm">
+              CURRENT * EOS PER VIG RATE:
+              <span class="text-text1">{{ getCurrentVigValue }} EOS/1 VIG</span>
+            </div>
+          </div>
         </div>
-        <div class="q-caption text-text2 q-mt-md">
+        <div class="q-caption text-text2 q-mt-sm">
           * THE RATE SHOWN IS NOT FINAL. The current rate is not the price you
           will be purchasing the VIG Tokens at, the price will be determined
           ONLY at the end of each Round.
@@ -60,7 +72,7 @@
 
       <div class="col-xs-12 col-md-5">
         <div class="bg-bg1 round-borders shadow-4 q-pa-md">
-          <div class="q-title">Burn EOS, Claim VIG</div>
+          <div class="q-title">Burn EOS & Claim VIG</div>
           <q-field :helper="getEstimatedTokenAmount">
             <q-input
               :dark="getIsDark"
@@ -102,7 +114,9 @@
               >
                 <td>{{ cycle.number }}</td>
                 <td>{{ cycle.total_payins.split(" ")[0] }}</td>
-                <td>{{ cycle.total_payins.split(" ")[0] / 100 }}</td>
+                <td>
+                  {{ (cycle.total_payins.split(" ")[0] / 100).toFixed(4) }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -355,6 +369,10 @@ export default {
 
 <style lang="stylus">
  @import '~variables'
+
+.round{
+  border-radius:50%;
+}
 #rounds_table {
   width: 100%;
   table-layout: fixed;
