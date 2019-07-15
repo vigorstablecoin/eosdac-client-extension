@@ -1,7 +1,7 @@
 <template>
   <!-- https://jungle.eosq.app/account/vigairburn12/tables?lowerBound=&scope=vigairburn12&tableName=payment -->
   <q-page class="q-pa-md">
-    <div class="bg-bg1 round-borders q-pa-md shadow-4">
+    <div class="bg-bg1 round-borders q-pa-md shadow-4 text-text2">
       The VIG tokens are distributed via an AirBurn model. When you transfer EOS
       in to the contract ({{ contractname }}) the EOS will be burned and you'll
       be able to claim your proportional VIG amount at the next round. Each
@@ -37,34 +37,39 @@
     </countdown>
 
     <!-- <pre>{{ contractSettings }}</pre> -->
-    <q-input
-      :dark="getIsDark"
-      type="number"
-      v-model="transferamount"
-      color="primary-light"
-      stack-label="Amount in EOS"
-    />
-    <q-btn
-      @click="burnEos"
-      label="send"
-      color="primary"
-      :disabled="transferamount < getMinimumBurnAmount"
-    />
-    <q-btn
-      class="animate-pop"
-      @click="claimPayments"
-      label="claim"
-      color="primary"
-      v-if="myclaimables.length"
-    />
+    <div class="row items-center">
+      <q-input
+        :dark="getIsDark"
+        type="number"
+        v-model="transferamount"
+        color="primary-light"
+        stack-label="Amount in EOS"
+      />
+      <div>
+        <q-btn
+          @click="burnEos"
+          label="send"
+          color="primary"
+          :disabled="transferamount < getMinimumBurnAmount"
+        />
+      </div>
+    </div>
+
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
-    <div class="row gutter-md">
+    <div class="row gutter-md q-mt-md">
       <div class="col-xs-12 col-md-6">
         last 10 cycles
         <pre>{{ cycles }}</pre>
       </div>
       <div class="col-xs-12 col-md-6">
         my claims
+        <q-btn
+          class="animate-pop"
+          @click="claimPayments"
+          label="claim"
+          color="primary"
+          v-if="myclaimables.length"
+        />
         <pre>{{ myclaimables }}</pre>
       </div>
     </div>
