@@ -80,7 +80,6 @@
     </q-layout-drawer>
 
     <q-page-container class="bg-bg2 text-text1 relative-position">
-      <request-signature />
       <router-view />
       <transactionOverlay />
     </q-page-container>
@@ -105,14 +104,12 @@ import { mapGetters } from "vuex";
 import transactionOverlay from "components/ui/transaction-overlay";
 import toolbarMenu from "components/controls/menus/toolbar-menu";
 // import mainMenu from "components/controls/menus/main-menu";
-import requestSignature from "components/ui/request-signature";
 
 export default {
   name: "MyLayout",
   components: {
     transactionOverlay,
-    toolbarMenu,
-    requestSignature
+    toolbarMenu
   },
   data() {
     return {
