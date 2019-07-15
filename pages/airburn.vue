@@ -131,8 +131,8 @@ export default {
         parseFloat(
           this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
         );
-      return `estimated token amount ${Math.round(
-        this.transferamount / price
+      return `estimated token amount ${(this.transferamount / price).toFixed(
+        4
       )} VIG`;
     },
     getCurrentCycleStats() {
