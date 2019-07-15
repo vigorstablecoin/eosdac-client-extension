@@ -36,7 +36,7 @@
       </template>
     </countdown>
 
-    <pre>{{ contractSettings }}</pre>
+    <!-- <pre>{{ contractSettings }}</pre> -->
     <q-input
       :dark="getIsDark"
       v-model="transferamount"
@@ -44,9 +44,22 @@
       stack-label="Amount EOS"
     />
     <q-btn @click="burnEos" label="send" color="primary" />
-    <q-btn @click="getClaimablePayments" label="test" />
-    <q-btn @click="claimPayments" label="claim" color="primary" />
-    <pre>{{ cycles }}</pre>
+    <q-btn
+      @click="claimPayments"
+      label="claim"
+      color="primary"
+      v-if="myclaimables.length"
+    />
+    <div class="row gutter-md">
+      <div class="col-xs-12 col-md-6">
+        all cycles
+        <pre>{{ cycles }}</pre>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        my claims
+        <pre>{{ myclaimables }}</pre>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -62,7 +75,8 @@ export default {
     return {
       contractname: this.$configFile.configFile.contracts.airburn.name,
       contractSettings: false,
-      cycles: false,
+      cycles: [],
+      myclaimables: [],
       transferamount: "",
       NOW: new Date().getTime()
     };
@@ -109,6 +123,7 @@ export default {
   methods: {
     startNewCycle() {
       this.NOW = new Date().getTime();
+      this.getClaimablePayments();
     },
     //read data
     async getSettings() {
@@ -165,8 +180,9 @@ export default {
           console.log(e);
           return false;
         });
-
-      console.log("claimables", res);
+      if (res) {
+        this.myclaimables = res.rows;
+      }
     },
     async getPayInPerCycle() {
       let cycle = 18;
@@ -199,6 +215,7 @@ export default {
         actions: action
       });
       if (result) {
+        this.getClaimablePayments();
         console.log(result);
       }
     },
@@ -220,16 +237,16 @@ export default {
       });
       if (result) {
         console.log(result);
-        this.getCycles();
-        this.getPayInPerCycle();
+        await this.getCycles();
+        await this.getPayInPerCycle();
       }
     }
   },
-  mounted() {
-    this.getSettings();
+  async mounted() {
+    await this.getSettings();
+    await this.getCycles();
     this.getClaimablePayments();
     this.getPayInPerCycle();
-    this.getCycles();
   }
 };
 </script>
