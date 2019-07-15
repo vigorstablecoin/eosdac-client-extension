@@ -12,69 +12,78 @@
       will be proportional divided based on the amount of EOS you and other
       people have burned.
     </div> -->
-    <div v-if="contractSettings">
-      <div>
-        Ongoing Round: {{ getCurrentCycleStats.current_cycle_number }}/{{
-          getCurrentCycleStats.rounds_left
-        }}
-      </div>
-      <div>
-        EOS BURNED IN ONGOING ROUND: {{ getTotalPayInForCurrentCycle }} EOS
-      </div>
-      <div>
-        CURRENT * EOS PER VIG RATE: {{ getCurrentVigValue }} EOS per 1 VIG
-      </div>
-      <div>
-        * THE RATE SHOWN IS NOT FINAL. The current rate is not the price you
-        will be purchasing the VIG Tokens at, the price will be determined ONLY
-        at the end of each Round.
-      </div>
-    </div>
-    <countdown
-      v-if="contractSettings"
-      :time="getCurrentCycleStats.ms_left"
-      :emit-events="true"
-      @end="startNewCycle"
-    >
-      <template slot-scope="props">
-        <div class="q-title">Round ends in</div>
-        <div class="text-weight-light text-text2">
-          <span v-if="props.days">{{ props.days }} days, </span>
-          <span v-if="props.hours">{{ props.hours }} hours, </span>
-          <span v-if="props.minutes">{{ props.minutes }} minutes, </span>
-          <span>{{ props.seconds }} seconds</span>
-        </div>
-      </template>
-    </countdown>
 
     <!-- <pre>{{ contractSettings }}</pre> -->
-    <div class="row items-center">
-      <q-field :helper="getEstimatedTokenAmount">
-        <q-input
-          :dark="getIsDark"
-          type="number"
-          v-model="transferamount"
-          color="primary-light"
-          stack-label="Amount in EOS"
-          suffix="EOS"
-        />
-      </q-field>
-
-      <div class="on-right">
-        <q-btn
-          @click="burnEos"
-          icon="mdi-fire"
-          label="burn"
-          color="primary"
-          size="md"
-          :disabled="transferamount < getMinimumBurnAmount"
-        />
-      </div>
-    </div>
 
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
 
-    <div class="row gutter-md q-mt-md">
+    <div class="row gutter-md">
+      <div class="col-xs-12 col-md-7">
+        <div
+          v-if="contractSettings"
+          class="round-border shadow-4 bg-bg1 q-pa-md"
+        >
+          <div>
+            Ongoing Round: {{ getCurrentCycleStats.current_cycle_number }}/{{
+              getCurrentCycleStats.rounds_left
+            }}
+          </div>
+          <div>
+            EOS BURNED IN ONGOING ROUND: {{ getTotalPayInForCurrentCycle }} EOS
+          </div>
+          <div>
+            CURRENT * EOS PER VIG RATE: {{ getCurrentVigValue }} EOS per 1 VIG
+          </div>
+
+          <countdown
+            :time="getCurrentCycleStats.ms_left"
+            :emit-events="true"
+            @end="startNewCycle"
+          >
+            <template slot-scope="props">
+              <div class="q-title">Round ends in</div>
+              <div class="text-weight-light text-text2">
+                <span v-if="props.days">{{ props.days }} days, </span>
+                <span v-if="props.hours">{{ props.hours }} hours, </span>
+                <span v-if="props.minutes">{{ props.minutes }} minutes, </span>
+                <span>{{ props.seconds }} seconds</span>
+              </div>
+            </template>
+          </countdown>
+        </div>
+        <div class="q-caption text-text2 q-mt-md">
+          * THE RATE SHOWN IS NOT FINAL. The current rate is not the price you
+          will be purchasing the VIG Tokens at, the price will be determined
+          ONLY at the end of each Round.
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-md-5">
+        <div class="bg-bg1 round-borders shadow-4 q-pa-md">
+          <div class="q-title">Burn EOS, Claim VIG</div>
+          <q-field :helper="getEstimatedTokenAmount">
+            <q-input
+              :dark="getIsDark"
+              type="number"
+              v-model="transferamount"
+              color="primary-light"
+              suffix="EOS"
+            />
+          </q-field>
+
+          <div class="row justify-end">
+            <q-btn
+              @click="burnEos"
+              icon="mdi-fire"
+              label="burn"
+              color="primary"
+              size="md"
+              :disabled="transferamount < getMinimumBurnAmount"
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="col-xs-12 col-md-8">
         <div class="round-borders shadow-4 overflow-hidden">
           <table id="rounds_table" class="bg-logo">
