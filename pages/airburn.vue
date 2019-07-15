@@ -77,12 +77,17 @@
                 >{{ getAverageVigValue.toFixed(4) }} EOS/1 VIG</span
               >
             </div>
+            <div class="q-mt-sm">
+              AMOUNT OF VIG DISTRIBUTED PER ROUND:
+              <span class="text-text1">{{
+                contractSettings.quota_per_cycle.quantity
+              }}</span>
+            </div>
           </div>
         </div>
         <div class="q-caption text-text2 q-mt-sm">
-          * THE RATE SHOWN IS NOT FINAL. The current rate is not the price you
-          will be purchasing the VIG Tokens at, the price will be determined
-          ONLY at the end of each Round.
+          * THE RATE SHOWN IS NOT FINAL. The actual amount of EOS burned per VIG
+          received will be determined ONLY at the end of each Round.
         </div>
       </div>
 
