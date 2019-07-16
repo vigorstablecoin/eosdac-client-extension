@@ -485,6 +485,7 @@ export default {
     }
   },
   async mounted() {
+    await this.$store.dispatch("global/getDacApi");
     await this.getSettings();
     await this.getCycles();
     this.getClaimablePayments();
