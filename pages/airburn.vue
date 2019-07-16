@@ -143,9 +143,8 @@
           </div>
           <div class="q-pa-md">
             <div class="q-caption text-text2">
-              Burn EOS by transferring it to this account owned by eosio ({{
-                contractname
-              }})
+              Burn EOS by transferring it to the contract "{{ contractname }}"
+              owned by eosio.
             </div>
             <q-field :helper="getEstimatedTokenAmount">
               <q-input
@@ -230,6 +229,7 @@
               label="claim"
               color="primary"
               v-if="myclaimables.length"
+              :disabled="!getUserCanClaim"
             />
           </div>
           <!-- <pre>{{ myclaimables }}</pre> -->
@@ -341,6 +341,9 @@ export default {
         }
       }
       return totalEOSIn;
+    },
+    getUserCanClaim() {
+      return !!this.myclaimables.find(mc => mc.claimable === true);
     }
   },
   methods: {
