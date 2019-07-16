@@ -52,9 +52,7 @@
                   <span class="">/{{ getCurrentCycleStats.rounds_left }}</span>
                   <span> ends in </span>
                 </div>
-                <div class="text-weight-light text-text2 q-display-1">
-                  <!-- <span >{{ props.days }} days, </span> -->
-
+                <div class="text-weight-light text-text2 q-subheading">
                   <span v-if="props.days">{{ props.days }} days, </span>
                   <span v-if="props.hours">{{ props.hours }} hours, </span>
                   <span v-if="props.minutes">{{ props.minutes }} min, </span>
