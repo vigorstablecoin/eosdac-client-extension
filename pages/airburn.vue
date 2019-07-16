@@ -110,7 +110,7 @@
                 :key="index"
                 class="animate-fade"
               >
-                <td>{{ cycle.number }}</td>
+                <td># {{ cycle.number }}</td>
                 <td>{{ cycle.total_payins.split(" ")[0] }}</td>
                 <td>
                   {{ (cycle.total_payins.split(" ")[0] / 100).toFixed(4) }}
@@ -143,7 +143,9 @@
           </div>
           <div class="q-pa-md">
             <div class="q-caption text-text2">
-              Burn EOS by transfering it to our contract ({{ contractname }})
+              Burn EOS by transferring it to this account owned by eosio ({{
+                contractname
+              }})
             </div>
             <q-field :helper="getEstimatedTokenAmount">
               <q-input
@@ -186,7 +188,13 @@
           >
             No claims, first burn EOS
           </div>
-          <q-list dense no-border highlight :dark="getIsDark">
+          <q-list
+            dense
+            no-border
+            highlight
+            :dark="getIsDark"
+            class="claimables"
+          >
             <q-item
               v-for="(claim, i) in myclaimables"
               :key="`claim${i}`"
@@ -423,22 +431,7 @@ export default {
         this.myclaimables = [];
       }
     },
-    async getPayInPerCycle() {
-      let cycle = 18;
-      let res = await this.getDacApi.eos
-        .get_table_rows({
-          json: true,
-          code: this.contractname,
-          scope: this.contractname,
-          table: "cycle",
-          lower_bound: cycle,
-          upper_bound: cycle,
-          limit: -1
-        })
-        .catch(e => false);
 
-      console.log("cyclepayins", res);
-    },
     //actions
     async claimPayments() {
       let action = [
@@ -477,7 +470,7 @@ export default {
       if (result) {
         console.log(result);
         await this.getCycles();
-        await this.getPayInPerCycle();
+
         this.getClaimablePayments();
         this.$store.dispatch("user/fetchBalances");
         this.transferamount = "";
@@ -488,8 +481,12 @@ export default {
     await this.$store.dispatch("global/getDacApi");
     await this.getSettings();
     await this.getCycles();
-    this.getClaimablePayments();
-    this.getPayInPerCycle();
+    await this.getClaimablePayments();
+  },
+  watch: {
+    getAccountName: function() {
+      this.getClaimablePayments();
+    }
   }
 };
 </script>
@@ -520,4 +517,7 @@ export default {
 }
 
 #rounds_table tr:hover {background-color: var(--q-color-dark);}
+.claimables.q-list-dark.q-list-highlight > .q-item:hover, .q-list-dark .q-item-highlight:hover, .q-list-dark.q-list-link > .q-item:hover, .q-list-dark .q-item-link:hover {
+      background-color: var(--q-color-dark);
+}
 </style>
