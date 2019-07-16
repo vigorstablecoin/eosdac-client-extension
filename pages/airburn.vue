@@ -94,7 +94,10 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-md-8">
+      <div
+        class="col-xs-12 col-md-8"
+        :class="{ 'order-last': $q.screen.lt.md }"
+      >
         <div class="round-borders shadow-4 overflow-hidden">
           <table id="rounds_table" class="bg-logo">
             <thead>
