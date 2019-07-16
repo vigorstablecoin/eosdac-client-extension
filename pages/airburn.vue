@@ -186,7 +186,7 @@
             v-if="!myclaimables.length"
             class="row justify-center q-pt-md text-text2"
           >
-            You don't have anything to claim
+            No claims, first burn EOS
           </div>
           <q-list dense no-border highlight :dark="getIsDark">
             <q-item
