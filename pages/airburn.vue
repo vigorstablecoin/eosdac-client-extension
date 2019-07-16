@@ -17,7 +17,7 @@
 
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
 
-    <div class="row gutter-md q-mt-sm">
+    <div class="row gutter-sm q-mt-sm">
       <div class="col-xs-12 col-md-7">
         <div
           v-if="contractSettings"
@@ -57,10 +57,8 @@
 
                   <span v-if="props.days">{{ props.days }} days, </span>
                   <span v-if="props.hours">{{ props.hours }} hours, </span>
-                  <span v-if="props.minutes"
-                    >{{ props.minutes }} minutes,
-                  </span>
-                  <span>{{ props.seconds }} seconds</span>
+                  <span v-if="props.minutes">{{ props.minutes }} min, </span>
+                  <span>{{ props.seconds }} sec</span>
                 </div>
               </template>
             </countdown>
@@ -98,32 +96,6 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-md-5">
-        <div class="bg-bg1 round-borders shadow-4 q-pa-md">
-          <div class="q-title">Burn EOS & Claim VIG</div>
-          <q-field :helper="getEstimatedTokenAmount">
-            <q-input
-              :dark="getIsDark"
-              type="number"
-              v-model="transferamount"
-              color="primary-light"
-              suffix="EOS"
-            />
-          </q-field>
-
-          <div class="row justify-end">
-            <q-btn
-              @click="burnEos"
-              icon="mdi-fire"
-              label="burn"
-              color="primary"
-              size="md"
-              :disabled="transferamount < getMinimumBurnAmount"
-            />
-          </div>
-        </div>
-      </div>
-
       <div class="col-xs-12 col-md-8">
         <div class="round-borders shadow-4 overflow-hidden">
           <table id="rounds_table" class="bg-logo">
@@ -156,17 +128,106 @@
           />
         </div>
       </div>
+
       <div class="col-xs-12 col-md-4">
-        <div class="round-borders bg-bg1 q-pa-md shadow-4">
-          my claims
-          <q-btn
-            class="animate-pop"
-            @click="claimPayments"
-            label="claim"
-            color="primary"
-            v-if="myclaimables.length"
-          />
-          <pre>{{ myclaimables }}</pre>
+        <div class="bg-bg1 round-borders shadow-4 overflow-hidden q-mb-md">
+          <div
+            class="q-px-sm row justify-between items-center bg-primary "
+            style="height:45px"
+          >
+            <span class="q-title text-weight-light">Burn EOS</span>
+            <help-btn
+              content="You can claim your share of VIG tokens after the burn round ends."
+              title="My Claimable VIG"
+              color="text1"
+              size="sm"
+            />
+          </div>
+          <div class="q-pa-md">
+            <div class="q-caption text-text2">
+              Burn EOS by transfering it to our contract ({{ contractname }})
+            </div>
+            <q-field :helper="getEstimatedTokenAmount">
+              <q-input
+                :dark="getIsDark"
+                type="number"
+                v-model="transferamount"
+                color="primary-light"
+                suffix="EOS"
+              />
+            </q-field>
+
+            <div class="row justify-end">
+              <q-btn
+                @click="burnEos"
+                icon="mdi-fire"
+                label="burn"
+                color="primary"
+                size="md"
+                :disabled="transferamount < getMinimumBurnAmount"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="round-borders bg-bg1 shadow-4 overflow-hidden">
+          <div
+            class="q-px-sm row justify-between items-center bg-primary "
+            style="height:45px"
+          >
+            <span class="q-title text-weight-light">My Claimable VIG</span>
+            <help-btn
+              content="You can claim your share of VIG tokens after the burn round ends."
+              title="My Claimable VIG"
+              color="text1"
+              size="sm"
+            />
+          </div>
+          <div
+            v-if="!myclaimables.length"
+            class="row justify-center q-pt-md text-text2"
+          >
+            You don't have anything to claim
+          </div>
+          <q-list dense no-border highlight :dark="getIsDark">
+            <q-item
+              v-for="(claim, i) in myclaimables"
+              :key="`claim${i}`"
+              class="animate-fade"
+            >
+              <q-item-side left>
+                <q-icon
+                  v-if="claim.claimable"
+                  name="mdi-fire"
+                  size="32px"
+                  color="primary"
+                />
+                <q-icon v-else name="mdi-fire" color="negative" size="32px" />
+              </q-item-side>
+              <q-item-main>
+                <q-item-tile label>Burned {{ claim.quantity }}</q-item-tile>
+                <q-item-tile v-if="claim.claimable" sublabel>
+                  claim ~{{
+                    calcTokenShareForCycle(claim.quantity, claim.cycle_number)
+                  }}
+                  VIG from round {{ claim.cycle_number }}
+                </q-item-tile>
+                <q-item-tile v-if="!claim.claimable" sublabel>
+                  round {{ claim.cycle_number }} in progress
+                </q-item-tile>
+              </q-item-main>
+            </q-item>
+          </q-list>
+          <div class="row q-pa-md justify-end">
+            <q-btn
+              class="animate-pop"
+              @click="claimPayments"
+              label="claim"
+              color="primary"
+              v-if="myclaimables.length"
+            />
+          </div>
+          <!-- <pre>{{ myclaimables }}</pre> -->
+          <!-- <pre>{{ cycles }}</pre> -->
         </div>
       </div>
     </div>
@@ -176,10 +237,12 @@
 <script>
 import { mapGetters } from "vuex";
 import countdown from "@chenfengyuan/vue-countdown";
+import helpBtn from "components/controls/help-btn";
 export default {
   name: "airburn",
   components: {
-    countdown
+    countdown,
+    helpBtn
   },
   data() {
     return {
@@ -279,6 +342,18 @@ export default {
       this.NOW = new Date().getTime();
       this.getClaimablePayments();
       this.getCycles();
+    },
+    calcTokenShareForCycle(burnedeos, cycle_number) {
+      let eos = parseFloat(burnedeos.split(" ")[0]);
+      let cycle = this.cycles.find(c => c.number == cycle_number);
+      let batch = parseFloat(
+        this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
+      );
+      let total_payin = 0;
+      if (cycle) {
+        total_payin = parseFloat(cycle.total_payins.split(" ")[0]);
+      }
+      return ((eos / total_payin) * batch).toFixed(4);
     },
     //read data
     async getSettings() {
