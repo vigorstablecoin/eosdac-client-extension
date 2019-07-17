@@ -118,12 +118,7 @@
           >
             <q-icon name="icon-type-2" size="32px" class="text-text2" />
             <span class="q-title text-weight-light">Price History</span>
-            <help-btn
-              content="You can claim your share of VIG tokens after the burn round ends."
-              title="Claim VIG"
-              color="text1"
-              size="sm"
-            />
+            <span>&nbsp;</span>
           </div>
           <div class="q-pa-md">
             <price-chart :data="cycles" />
@@ -171,8 +166,10 @@
             <q-icon name="mdi-fire" size="32px" class="text-text2" />
             <span class="q-title text-weight-light">Burn EOS</span>
             <help-btn
-              content="You can claim your share of VIG tokens after the burn round ends."
-              title="Claim VIG"
+              :content="
+                `EOS sent to ${contractname} will be burned. This means that it will be taken out of (total) supply. Nobody will receive the EOS tokens and there will exist less total EOS in existance after performing this action.`
+              "
+              title="Burn EOS"
               color="text1"
               size="sm"
             />
@@ -212,7 +209,7 @@
             <q-icon name="mdi-wallet-outline" size="32px" class="text-text2" />
             <span class="q-title text-weight-light">Claim VIG</span>
             <help-btn
-              content="You can claim your share of VIG tokens after the burn round ends."
+              content="You can claim your share of VIG tokens after the burn round ends. The amount of VIG received will be proportional to the amount of EOS you have burned."
               title="My Claimable VIG"
               color="text1"
               size="sm"
