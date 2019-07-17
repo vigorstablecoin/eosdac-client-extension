@@ -79,6 +79,26 @@ export default {
               }
             }
           ]
+        },
+        tooltips: {
+          intersect: false,
+          position: "average",
+          callbacks: {
+            title: function(tooltipItem, data) {
+              return `Round ${data["labels"][tooltipItem[0]["index"]]}`;
+            },
+            label: function(tooltipItem, data) {
+              return `value ${
+                data["datasets"][0]["data"][tooltipItem["index"]]
+              } EOS/VIG`;
+            }
+          },
+          backgroundColor: colors.getBrand("dark"),
+          titleFontSize: 14,
+          titleFontColor: colors.getBrand("text1"),
+          bodyFontColor: colors.getBrand("text2"),
+          bodyFontSize: 12,
+          displayColors: false
         }
       }
     };
@@ -103,6 +123,9 @@ export default {
     },
     async setData() {
       let reverse = JSON.parse(JSON.stringify(this.data)).reverse();
+      // for (let i = 0; i < 50; i++) {
+      //   reverse.push({ number: 700 + i });
+      // }
       this.chartData = {
         labels: reverse.map(d => d.number),
         datasets: [
