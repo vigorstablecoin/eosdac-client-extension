@@ -550,6 +550,9 @@ export default {
     await this.getSettings();
     await this.getCycles();
     await this.getClaimablePayments();
+    setInterval(() => {
+      this.getCycles();
+    }, 1000 * 60);
   },
   watch: {
     getAccountName: function() {
