@@ -18,7 +18,7 @@
     <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
 
     <div class="row gutter-sm q-mt-sm">
-      <div class="col-xs-12 col-md-7">
+      <div class="col-sm-12 col-md-7 tester">
         <div
           v-if="contractSettings"
           class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position animate-fade"
@@ -45,24 +45,77 @@
                   class="q-title text-weight-light round-borders"
                   style="display:inline-block"
                 >
-                  <span><q-icon name="mdi-timer" /> Round </span>
+                  <span>Round </span>
                   <span class="text-weight-bold">{{
                     getCurrentCycleStats.current_cycle_number
                   }}</span>
                   <span class="">/{{ getCurrentCycleStats.rounds_left }}</span>
                   <span> ends in </span>
                 </div>
-                <div class="text-weight-light text-text2 q-subheading">
-                  <span v-if="props.days">{{ props.days }} days, </span>
-                  <span v-if="props.hours">{{ props.hours }} hours, </span>
-                  <span v-if="props.minutes">{{ props.minutes }} min, </span>
+                <div
+                  class="row items-center text-weight-light text-text2 q-subheading q-mt-xs"
+                >
+                  <q-icon name="mdi-timer" class="q-mr-xs" />
+                  <span v-if="props.days">{{ props.days }} days,&nbsp;</span>
+                  <span v-if="props.hours">{{ props.hours }} hours,&nbsp;</span>
+                  <span v-if="props.minutes">
+                    {{ props.minutes }} min,&nbsp;</span
+                  >
                   <span>{{ props.seconds }} sec</span>
                 </div>
               </template>
             </countdown>
           </div>
-          <div class="text-text2">
-            <div class="q-mt-md">
+          <div class=" row gutter-xs  q-mt-sm">
+            <div class="col-12-xs col-6-md on-left">
+              <q-item class="no-padding ">
+                <q-item-side icon="check" color="primary-light" />
+                <q-item-main>
+                  <q-item-tile label class="text-text2"
+                    >EOS BURNED IN ONGOING ROUND:</q-item-tile
+                  >
+                  <q-item-tile sublabel class="text-text1"
+                    >{{ getTotalPayInForCurrentCycle }} EOS</q-item-tile
+                  >
+                </q-item-main>
+              </q-item>
+              <q-item class="no-padding q-mt-sm">
+                <q-item-side icon="check" color="primary-light" />
+                <q-item-main>
+                  <q-item-tile label class="text-text2"
+                    >CURRENT * EOS PER VIG RATE:</q-item-tile
+                  >
+                  <q-item-tile sublabel class="text-text1"
+                    >{{ getCurrentVigValue.toFixed(4) }} EOS/1 VIG</q-item-tile
+                  >
+                </q-item-main>
+              </q-item>
+            </div>
+            <div class="col-12-xs col-6-md">
+              <q-item class="no-padding">
+                <q-item-side icon="check" color="primary-light" />
+                <q-item-main>
+                  <q-item-tile label class="text-text2"
+                    >AVERAGE EOS PER VIG RATE:</q-item-tile
+                  >
+                  <q-item-tile sublabel class="text-text1"
+                    >{{ getAverageVigValue.toFixed(4) }} EOS/1 VIG</q-item-tile
+                  >
+                </q-item-main>
+              </q-item>
+              <q-item class="no-padding q-mt-sm">
+                <q-item-side icon="check" color="primary-light" />
+                <q-item-main>
+                  <q-item-tile label class="text-text2"
+                    >AMOUNT OF VIG DIVIDED PER ROUND:</q-item-tile
+                  >
+                  <q-item-tile sublabel class="text-text1">{{
+                    contractSettings.quota_per_cycle.quantity
+                  }}</q-item-tile>
+                </q-item-main>
+              </q-item>
+            </div>
+            <!-- <div class="q-mt-md">
               EOS BURNED IN ONGOING ROUND:
               <span class="text-text1"
                 >{{ getTotalPayInForCurrentCycle }} EOS</span
@@ -85,7 +138,7 @@
               <span class="text-text1">{{
                 contractSettings.quota_per_cycle.quantity
               }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="q-caption text-text2 q-mt-sm">
@@ -95,7 +148,7 @@
       </div>
 
       <div
-        class="col-xs-12 col-md-8"
+        class="col-xs-12 col-md-8 tester"
         :class="{ 'order-last': $q.screen.lt.md }"
       >
         <div class="round-borders shadow-4 overflow-hidden">
@@ -130,12 +183,15 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-md-4">
-        <div class="bg-bg1 round-borders shadow-4 overflow-hidden q-mb-md">
+      <div class="col-xs-12 col-md-4 tester">
+        <div
+          class="bg-bg1 round-borders shadow-4 overflow-hidden q-mb-md bg-logo"
+        >
           <div
             class="q-px-sm row justify-between items-center bg-primary "
             style="height:45px"
           >
+            <q-icon name="mdi-fire" size="32px" class="text-text2" />
             <span class="q-title text-weight-light">Burn EOS</span>
             <help-btn
               content="You can claim your share of VIG tokens after the burn round ends."
@@ -159,7 +215,7 @@
               />
             </q-field>
 
-            <div class="row justify-end">
+            <div class="row justify-end q-mt-md">
               <q-btn
                 @click="burnEos"
                 icon="mdi-fire"
@@ -176,6 +232,7 @@
             class="q-px-sm row justify-between items-center bg-primary "
             style="height:45px"
           >
+            <q-icon name="mdi-wallet-outline" size="32px" class="text-text2" />
             <span class="q-title text-weight-light">My Claimable VIG</span>
             <help-btn
               content="You can claim your share of VIG tokens after the burn round ends."
@@ -525,5 +582,9 @@ export default {
 #rounds_table tr:hover {background-color: var(--q-color-dark);}
 .claimables.q-list-dark.q-list-highlight > .q-item:hover, .q-list-dark .q-item-highlight:hover, .q-list-dark.q-list-link > .q-item:hover, .q-list-dark .q-item-link:hover {
       background-color: var(--q-color-dark);
+}
+
+.tester{
+  transition: all 0.25s ease-in;
 }
 </style>
