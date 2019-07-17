@@ -1,27 +1,11 @@
 <template>
   <!-- https://jungle.eosq.app/account/vigairburn12/tables?lowerBound=&scope=vigairburn12&tableName=payment -->
   <q-page class="q-pa-md">
-    <!-- <div class="bg-bg1 round-borders q-pa-md shadow-4 text-text2">
-      The VIG tokens are distributed via an AirBurn model. When you transfer EOS
-      in to the contract ({{ contractname }}) the EOS will be burned and you'll
-      be able to claim your proportional VIG amount at the next round. Each
-      round
-      <span v-if="contractSettings">{{
-        contractSettings.quota_per_cycle.quantity
-      }}</span>
-      will be proportional divided based on the amount of EOS you and other
-      people have burned.
-    </div> -->
-
-    <!-- <pre>{{ contractSettings }}</pre> -->
-
-    <!-- <q-btn @click="getClaimablePayments" label="refresh claims" /> -->
-
-    <div class="row gutter-sm q-mt-sm">
+    <div class="row gutter-sm q-mt-sm animate-fade" v-if="loading_page">
       <div class="col-sm-12 col-md-7 tester">
         <div
           v-if="contractSettings"
-          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position animate-fade"
+          class="round-border shadow-4 bg-bg1 q-pa-md bg-logo relative-position"
         >
           <q-btn
             icon="refresh"
@@ -147,7 +131,7 @@
         </div>
 
         <div class="round-borders shadow-4 overflow-hidden">
-          <table id="rounds_table" class="bg-logo">
+          <table id="rounds_table" class="bg-logo ">
             <thead>
               <tr class="q-title">
                 <th class="text-weight-light">Round Number</th>
@@ -220,7 +204,7 @@
             </div>
           </div>
         </div>
-        <div class="round-borders bg-bg1 shadow-4 overflow-hidden">
+        <div class="round-borders bg-bg1 shadow-4 overflow-hidden ">
           <div
             class="q-px-sm row justify-between items-center bg-primary "
             style="height:45px"
@@ -290,6 +274,12 @@
         </div>
       </div>
     </div>
+
+    <div v-else>
+      <div>
+        Loading...
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -315,7 +305,8 @@ export default {
       transferamount: "",
       NOW: new Date().getTime(),
 
-      loading_cycles: false
+      loading_cycles: false,
+      loading_page: false
     };
   },
   computed: {
@@ -550,6 +541,7 @@ export default {
     await this.getSettings();
     await this.getCycles();
     await this.getClaimablePayments();
+    this.loading_page = true;
     setInterval(() => {
       this.getCycles();
     }, 1000 * 60);
