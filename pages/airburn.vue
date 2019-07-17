@@ -115,30 +115,6 @@
                 </q-item-main>
               </q-item>
             </div>
-            <!-- <div class="q-mt-md">
-              EOS BURNED IN ONGOING ROUND:
-              <span class="text-text1"
-                >{{ getTotalPayInForCurrentCycle }} EOS</span
-              >
-            </div>
-            <div class="q-mt-sm">
-              CURRENT * EOS PER VIG RATE:
-              <span class="text-text1"
-                >{{ getCurrentVigValue.toFixed(4) }} EOS/1 VIG</span
-              >
-            </div>
-            <div class="q-mt-sm">
-              AVERAGE EOS PER VIG RATE:
-              <span class="text-text1"
-                >{{ getAverageVigValue.toFixed(4) }} EOS/1 VIG</span
-              >
-            </div>
-            <div class="q-mt-sm">
-              AMOUNT OF VIG DISTRIBUTED PER ROUND:
-              <span class="text-text1">{{
-                contractSettings.quota_per_cycle.quantity
-              }}</span>
-            </div> -->
           </div>
         </div>
         <div class="q-caption text-text2 q-mt-sm">
@@ -151,6 +127,25 @@
         class="col-xs-12 col-md-8 tester"
         :class="{ 'order-last': $q.screen.lt.md }"
       >
+        <div class="bg-bg1 round-borders shadow-4 overflow-hidden q-mb-md">
+          <div
+            class="q-px-sm row justify-between items-center bg-primary "
+            style="height:45px"
+          >
+            <q-icon name="icon-type-2" size="32px" class="text-text2" />
+            <span class="q-title text-weight-light">Price History</span>
+            <help-btn
+              content="You can claim your share of VIG tokens after the burn round ends."
+              title="Claim VIG"
+              color="text1"
+              size="sm"
+            />
+          </div>
+          <div class="q-pa-md">
+            <price-chart :data="cycles" />
+          </div>
+        </div>
+
         <div class="round-borders shadow-4 overflow-hidden">
           <table id="rounds_table" class="bg-logo">
             <thead>
@@ -168,9 +163,7 @@
               >
                 <td># {{ cycle.number }}</td>
                 <td>{{ cycle.total_payins.split(" ")[0] }}</td>
-                <td>
-                  {{ (cycle.total_payins.split(" ")[0] / 100).toFixed(4) }}
-                </td>
+                <td>{{ cycle.vig_value }}</td>
               </tr>
             </tbody>
           </table>
@@ -304,11 +297,13 @@
 import { mapGetters } from "vuex";
 import countdown from "@chenfengyuan/vue-countdown";
 import helpBtn from "components/controls/help-btn";
+import priceChart from "../components/price-chart";
 export default {
   name: "airburn",
   components: {
     countdown,
-    helpBtn
+    helpBtn,
+    priceChart
   },
   data() {
     return {
@@ -457,10 +452,20 @@ export default {
         .catch(e => {
           console.log(e);
           this.loading_cycles = false;
-          return false;
+          return [];
         });
       if (res) {
-        this.cycles = res.rows;
+        let cycles = res.rows;
+        cycles = cycles.map(c => {
+          c.vig_value = (
+            parseFloat(c.total_payins.split(" ")[0]) /
+            parseFloat(
+              this.contractSettings.quota_per_cycle.quantity.split(" ")[0]
+            )
+          ).toFixed(4);
+          return c;
+        });
+        this.cycles = cycles;
         this.loading_cycles = false;
       }
     },
@@ -580,6 +585,9 @@ export default {
 }
 
 #rounds_table tr:hover {background-color: var(--q-color-dark);}
+
+// #rounds_table tr:nth-child(odd){background-color: var(--q-color-dark);}
+
 .claimables.q-list-dark.q-list-highlight > .q-item:hover, .q-list-dark .q-item-highlight:hover, .q-list-dark.q-list-link > .q-item:hover, .q-list-dark .q-item-link:hover {
       background-color: var(--q-color-dark);
 }
