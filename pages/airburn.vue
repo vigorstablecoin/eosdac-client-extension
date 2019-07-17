@@ -167,7 +167,7 @@
             <span class="q-title text-weight-light">Burn EOS</span>
             <help-btn
               :content="
-                `EOS sent to ${contractname} will be burned. This means that it will be taken out of (total) supply. Nobody will receive the EOS tokens and there will exist less total EOS in existance after performing this action.`
+                `EOS sent to ${contractname} will be burned. This means that it will be taken out of (total) supply. Nobody will receive the EOS tokens and there will be less total EOS in existance after performing this action.`
               "
               title="Burn EOS"
               color="text1"

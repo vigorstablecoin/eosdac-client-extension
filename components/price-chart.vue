@@ -80,9 +80,15 @@ export default {
             }
           ]
         },
+        hover: {
+          mode: "index",
+          intersect: false
+        },
         tooltips: {
+          mode: "index",
           intersect: false,
           position: "average",
+          caretPadding: 10,
           callbacks: {
             title: function(tooltipItem, data) {
               return `Round ${data["labels"][tooltipItem[0]["index"]]}`;
@@ -136,6 +142,7 @@ export default {
             backgroundColor: this.getGradient(),
             borderColor: colors.getBrand("primary"),
             pointBackgroundColor: "none",
+            pointHoverBackgroundColor: colors.getBrand("primary-light"),
             borderWidth: 1,
             pointBorderColor: "none",
             pointRadius: 0
