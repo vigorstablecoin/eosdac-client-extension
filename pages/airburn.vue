@@ -195,13 +195,13 @@
             <span class="q-title text-weight-light">Burn EOS</span>
             <help-btn
               content="You can claim your share of VIG tokens after the burn round ends."
-              title="My Claimable VIG"
+              title="Claim VIG"
               color="text1"
               size="sm"
             />
           </div>
           <div class="q-pa-md">
-            <div class="q-caption text-text2">
+            <div class="q-caption text-text2 q-mb-md">
               Burn EOS by transferring it to the contract "{{ contractname }}"
               owned by eosio.
             </div>
@@ -233,7 +233,7 @@
             style="height:45px"
           >
             <q-icon name="mdi-wallet-outline" size="32px" class="text-text2" />
-            <span class="q-title text-weight-light">My Claimable VIG</span>
+            <span class="q-title text-weight-light">Claim VIG</span>
             <help-btn
               content="You can claim your share of VIG tokens after the burn round ends."
               title="My Claimable VIG"
