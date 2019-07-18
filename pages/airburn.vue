@@ -1,7 +1,6 @@
 <template>
   <!-- https://jungle.eosq.app/account/vigairburn12/tables?lowerBound=&scope=vigairburn12&tableName=payment -->
   <q-page class="q-pa-md">
-    {{ getCurrentCycleStats }}
     <div class="row gutter-sm q-mt-sm animate-fade" v-if="loading_page">
       <div class="col-sm-12 col-md-7 tester">
         <div
