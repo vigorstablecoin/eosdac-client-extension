@@ -1,6 +1,7 @@
 <template>
   <!-- https://jungle.eosq.app/account/vigairburn12/tables?lowerBound=&scope=vigairburn12&tableName=payment -->
   <q-page class="q-pa-md">
+    {{ getCurrentCycleStats }}
     <div class="row gutter-sm q-mt-sm animate-fade" v-if="loading_page">
       <div class="col-sm-12 col-md-7 tester">
         <div
@@ -135,10 +136,35 @@
               </tr>
             </thead>
             <tbody>
+              <tr class="ongoingroundtr" style="height:60px">
+                <td class="q-pl-md">
+                  <div class="text-text2 text-left q-caption q-mb-xs">
+                    Round {{ getCurrentCycleStats.current_cycle_number }} in
+                    progress
+                  </div>
+                  <div>
+                    <q-progress
+                      animate
+                      stripe
+                      class="round-borders"
+                      style="height:10px"
+                      color="primary-light"
+                      :percentage="getCurrentCycleStats.progress"
+                    />
+                  </div>
+                </td>
+                <td class="text-text2">{{ getTotalPayInForCurrentCycle }}</td>
+                <td class="q-pr-sm">
+                  <div class=" text-text2">
+                    Temporary value: {{ getCurrentVigValue.toFixed(4) }}
+                  </div>
+                </td>
+              </tr>
               <tr
                 v-for="(cycle, index) in cycles.slice(0, show_number_cycles)"
                 :key="index"
                 class="animate-fade"
+                v-if="cycle.number != getCurrentCycleStats.current_cycle_number"
               >
                 <td># {{ cycle.number }}</td>
                 <td>{{ cycle.total_payins.split(" ")[0] }}</td>
@@ -367,9 +393,11 @@ export default {
       let current_cycle_num = Math.trunc(
         (this.NOW - start_burn) / cycle_length
       );
+      let ms_left = cycle_length - ((this.NOW - start_burn) % cycle_length);
       return {
         current_cycle_number: current_cycle_num,
-        ms_left: cycle_length - ((this.NOW - start_burn) % cycle_length),
+        ms_left: ms_left,
+        progress: 100 - (ms_left / cycle_length) * 100,
         rounds_left: this.contractSettings.cycles - current_cycle_num
       };
     },
@@ -395,6 +423,7 @@ export default {
       this.getClaimablePayments();
       this.getCycles();
     },
+
     calcTokenShareForCycle(burnedeos, cycle_number) {
       let eos = parseFloat(burnedeos.split(" ")[0]);
       let cycle = this.cycles.find(c => c.number == cycle_number);
@@ -542,6 +571,9 @@ export default {
     setInterval(() => {
       this.getCycles();
     }, 1000 * 60);
+    setInterval(() => {
+      this.NOW = new Date().getTime();
+    }, 1000 * 5);
   },
   watch: {
     getAccountName: function() {
@@ -586,5 +618,9 @@ export default {
 
 .tester{
   transition: all 0.25s ease-in;
+}
+.ongoingroundtr{
+  border-bottom:1px solid var(--q-color-primary);
+  background-color: var(--q-color-dark) !important;
 }
 </style>
