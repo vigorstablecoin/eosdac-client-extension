@@ -1,87 +1,87 @@
 {
-    "dacName": "Vigor",
-    "dacScope": "vig",
-    "contracts": {
-        
-        "token": {
-            "name": "dactoken1111",
-            "symbol": "VIG",
-            "totalSupply": 1000000000.0000,
-            "decimals": 4
-        },
-        "system_token": {
-            "name": "vig111111111",
-            "symbol": "VIG",
-            "decimals": 4
-        },
-        "custodian": {
-            "name": "daccustodia1",
-            "memo": "daccustodia1",
-            "enable_voting" : true
-        },
-        "bot":{
-            "name": "eosdacthebot"
-        },
-        "system_msig": {
-            "name": "eosio.msig"
-        },
-        "dac_msig": {
-            "name": "dacmultisig1"
-        },        
-        "wpproposal":{
-            "name": "dacproposals"
-        },
-        "escrow":{
-            "name": "dacholding11"
-        }
-
+  "dacName": "Vigor",
+  "dacScope": "vig",
+  "contracts": {
+    "token": {
+      "name": "dactoken1111",
+      "symbol": "VIG",
+      "totalSupply": 1000000000.0,
+      "decimals": 4
     },
-
-    "accounts":{
-        "bpAccount": {
-            "name": "eosdacserver"
-        },
-        "treasuryAccount":{
-            "name": "dacholding11"
-        },
-    
-        "authAccount": {
-            "name": "dacauth11111"
-        }
+    "system_token": {
+      "name": "vig111111111",
+      "symbol": "VIG",
+      "decimals": 4
     },
-
-
-    "financial_page_graphs": [
-        {
-          "account": "dactoken1111",
-          "contract": "dactoken1111",
-          "symbol": "VIG",
-          "description":
-            "a description."
-        },
-        {
-            "account": "dacholding11",
-            "contract": "vig111111111",
-            "symbol": "VIG",
-            "description":
-              "a description."
-          }
-    ],
-
-
-    "api": {
-        "default_eos_node": "https://proxy.eosnode.tools:443",
-        "bpnodes": "https://eosdac.io/topnodes.json",
-        "memberclient": "https://toolkit-api.eosdac.io",
-        "memberclient_state_api": "https://api-dac.vigor.ai/v1/eosdac",
-        "firehose": "ws://bos.eosdac.io:1337"
+    "custodian": {
+      "name": "daccustodia1",
+      "memo": "daccustodia1",
+      "enable_voting": true
     },
-
-    "external":{
-        "homepage": "https://www.vigorstablecoin.com",
-        "whitepaper": "https://vigor.ai/vigor.pdf",
-        "telegram": "https://t.me/VIGORstablecoin",
-        "explorer": "https://bloks.io",
-        "dacexplorer": "https://explorer.eosdac.io"
+    "bot": {
+      "name": "eosdacthebot"
+    },
+    "system_msig": {
+      "name": "eosio.msig"
+    },
+    "dac_msig": {
+      "name": "dacmultisig1"
+    },
+    "wpproposal": {
+      "name": "dacproposals"
+    },
+    "escrow": {
+      "name": "dacholding11"
+    },
+    "airburn": {
+      "name": "todoairburn"
+    },
+    "vigor": {
+      "name": "todovigor"
     }
+  },
+
+  "accounts": {
+    "bpAccount": {
+      "name": "eosdacserver"
+    },
+    "treasuryAccount": {
+      "name": "dacholding11"
+    },
+
+    "authAccount": {
+      "name": "dacauth11111"
+    }
+  },
+
+  "financial_page_graphs": [
+    {
+      "account": "dactoken1111",
+      "contract": "dactoken1111",
+      "symbol": "VIG",
+      "description": "a description."
+    },
+    {
+      "account": "dacholding11",
+      "contract": "vig111111111",
+      "symbol": "VIG",
+      "description": "a description."
+    }
+  ],
+
+  "api": {
+    "default_eos_node": "https://proxy.eosnode.tools:443",
+    "bpnodes": "https://eosdac.io/topnodes.json",
+    "memberclient": "https://toolkit-api.eosdac.io",
+    "memberclient_state_api": "https://api-dac.vigor.ai/v1/eosdac",
+    "firehose": "ws://bos.eosdac.io:1337"
+  },
+
+  "external": {
+    "homepage": "https://www.vigorstablecoin.com",
+    "whitepaper": "https://vigor.ai/vigor.pdf",
+    "telegram": "https://t.me/VIGORstablecoin",
+    "explorer": "https://bloks.io",
+    "dacexplorer": "https://explorer.eosdac.io"
+  }
 }
