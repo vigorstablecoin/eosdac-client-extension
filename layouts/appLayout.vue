@@ -50,10 +50,10 @@
       ref="leftdrawer"
     >
       <q-list no-border link inset-delimiter>
-        <!-- <q-item to="/vigorapp/app_page1">
+        <q-item to="/vigorapp" exact>
           <q-item-side icon="receipt" color="text2" />
-          <q-item-main label="app page 1 " class="text-text1" />
-        </q-item> -->
+          <q-item-main label="Overview" class="text-text1" />
+        </q-item>
         <q-item to="/vigorapp/airburn">
           <q-item-side icon="mdi-fire" color="text2" />
           <q-item-main>

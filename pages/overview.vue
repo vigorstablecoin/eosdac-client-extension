@@ -7,7 +7,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "test",
   computed: {
     ...mapGetters({
       getAccountName: "user/getAccountName"
