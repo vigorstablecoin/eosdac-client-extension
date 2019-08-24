@@ -78,6 +78,7 @@
         "whitepaper": "https://vigor.ai/vigor.pdf",
 	"telegram": "https://t.me/VIGORstablecoin",
 	"explorer": "https://bloks.io",
-	"dacexplorer": "https://explorer.eosdac.io"
+    "dacexplorer": "https://explorer.eosdac.io",
+    "github": "https://github.com/vigorstablecoin"
     }
 }
