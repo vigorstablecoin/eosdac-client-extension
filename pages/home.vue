@@ -237,6 +237,7 @@
                 </div>
               </div>
             </div>
+
             <div
               class="q-mt-sm row justify-end items-center"
               style="min-height:50px"
@@ -246,6 +247,44 @@
                 color="bg2"
                 label="Visit"
                 @click.native="openURL($configFile.get('external').homepage)"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xl-4 col-md-12 col-sm-12 col-xs-12"
+          style="min-width:200px"
+        >
+          <div
+            class="column justify-between bg-primary shadow-14 round-borders full-height q-pa-md animate-pop"
+          >
+            <div>
+              <div class="q-title q-mb-lg">
+                Github
+              </div>
+              <div class="q-body-1 text-text2 relative-position">
+                <q-icon
+                  name="mdi-github-box"
+                  size="48px"
+                  class="absolute-top-left"
+                />
+                <div
+                  style="display:block;margin-left:55px;margin-top:-3px; width: calc(100% - 55px);"
+                >
+                  Contribute to the Vigor project
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="q-mt-sm row justify-end items-center"
+              style="min-height:50px"
+            >
+              <q-btn
+                class=""
+                color="bg2"
+                label="Visit"
+                @click.native="openURL($configFile.get('external').github)"
               />
             </div>
           </div>
