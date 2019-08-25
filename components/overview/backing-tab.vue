@@ -14,7 +14,6 @@
           radio
           :dark="getIsDark"
           :options="selectOptions"
-          @input="onChange"
         />
       </div>
       <div class="col-xs-7 col-lg-auto q-mr-md">
@@ -87,9 +86,6 @@ export default {
     }
   },
   methods: {
-    onChange(val) {
-      console.table(`selected`, val);
-    },
     rulesAmount(val) {
       // rules do not work for some reason in our quasar version
       return [true];
@@ -97,7 +93,7 @@ export default {
     _onSubmit(event) {
       event.preventDefault();
       event.stopPropagation();
-      console.table(`submitting`, event);
+
       const token = this.tokens.find(
         ({ symbol: { symbolCode } }) => symbolCode === this.selectedToken
       );

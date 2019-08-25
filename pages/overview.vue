@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import financialHealth from "../components/overview/financial-health";
 import backing from "../components/overview/backing";
 
@@ -18,6 +19,24 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters({
+      getAccountName: "user/getAccountName"
+    })
+  },
+  methods: {
+    fetchUserInfo() {
+      this.$store.dispatch("vigor/fetchUserInfo");
+    }
+  },
+  async mounted() {
+    await this.fetchUserInfo();
+  },
+  watch: {
+    getAccountName: function() {
+      this.fetchUserInfo();
+    }
   }
 };
 </script>

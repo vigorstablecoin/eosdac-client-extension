@@ -118,17 +118,16 @@ export default {
     return {
       vigorContractName: this.$configFile.configFile.contracts.vigor.name,
       loading: false,
-      availableTokens: [],
-      userInfo: null,
       tab: `depositCollateral`
     };
   },
   computed: {
     ...mapGetters({
-      getDacApi: "global/getDacApi",
       getIsDark: "ui/getIsDark",
       getAccountName: "user/getAccountName",
-      getAuth: "user/getAuth"
+      getAuth: "user/getAuth",
+      userInfo: "vigor/getUserInfo",
+      availableTokens: "vigor/getAvailableTokens"
     }),
     availableWithdrawCollateralTokens() {
       if (
@@ -166,57 +165,6 @@ export default {
     }
   },
   methods: {
-    async getAvailableDepositTokens() {
-      // TODO: fetch these extended assets from a list somewhere
-      // right now hard-coded in vigor's apply function
-      // https://github.com/vigorstablecoin/vigor/blob/dfe964029831ed9ece2f5e929ddbb1a6a1332c53/contracts/vigor/src/vigor.cpp#L896
-      this.availableTokens = [
-        {
-          contract: `eosio.token`,
-          symbol: {
-            symbolCode: `EOS`,
-            precision: 4
-          }
-        },
-        {
-          contract: `vigtokenz111`,
-          symbol: {
-            symbolCode: `VIG`,
-            precision: 4
-          }
-        },
-        {
-          contract: `dummytokensx`,
-          symbol: {
-            symbolCode: `IQ`,
-            precision: 3
-          }
-        }
-      ];
-    },
-    async getUserInfo() {
-      const userName = this.getAccountName;
-
-      try {
-        const userInfo = await this.getDacApi.eos.get_table_rows({
-          json: true,
-          code: this.vigorContractName,
-          scope: this.vigorContractName,
-          table: "user",
-          key_type: `name`,
-          index_position: 1,
-          lower_bound: `${userName}`,
-          upper_bound: `${userName}`,
-          limit: 1
-        });
-
-        this.userInfo = userInfo.rows[0];
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.loading = false;
-      }
-    },
     async onSubmit({ tabName, amount, token }) {
       try {
         let action = null;
@@ -262,11 +210,10 @@ export default {
         action.authorization = [
           { actor: this.getAccountName, permission: this.getAuth }
         ];
-        console.table(action);
         await this.$store.dispatch("user/transact", {
           actions: [action]
         });
-        await this.getUserInfo();
+        await this.$store.dispatch("vigor/fetchUserInfo");
       } catch (err) {
         console.error(err);
       } finally {
@@ -276,14 +223,8 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    await this.$store.dispatch("global/getDacApi");
-    await Promise.all(this.getUserInfo(), this.getAvailableDepositTokens());
+    await this.$store.dispatch("vigor/fetchAvailableTokens");
     this.loading = false;
-  },
-  watch: {
-    getAccountName: function() {
-      this.getUserInfo();
-    }
   }
 };
 </script>

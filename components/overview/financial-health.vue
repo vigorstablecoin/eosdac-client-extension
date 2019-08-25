@@ -32,7 +32,7 @@
 
         <q-btn
           icon="refresh"
-          @click="getFinancialHealth"
+          @click="refresh"
           flat
           :loading="loading"
           title="Reload data"
@@ -54,7 +54,6 @@ export default {
   data() {
     return {
       vigorContractName: this.$configFile.configFile.contracts.vigor.name,
-      financialHealthUser: null,
       financialHealthGlobal: null,
       loading: false
     };
@@ -63,54 +62,44 @@ export default {
     ...mapGetters({
       getDacApi: "global/getDacApi",
       getIsDark: "ui/getIsDark",
-      getAccountName: "user/getAccountName"
+      getAccountName: "user/getAccountName",
+      financialHealthUser: "vigor/getUserInfo"
     })
   },
   methods: {
-    async getFinancialHealth() {
+    async getGlobalFinancialHealth() {
       this.loading = true;
-      const userName = this.getAccountName;
-      console.table(userName);
 
       try {
-        const [globalRes, userRes] = await Promise.all([
-          this.getDacApi.eos.get_table_rows({
-            json: true,
-            code: this.vigorContractName,
-            scope: this.vigorContractName,
-            table: "globals",
-            limit: 1
-          }),
-          this.getDacApi.eos.get_table_rows({
-            json: true,
-            code: this.vigorContractName,
-            scope: this.vigorContractName,
-            table: "user",
-            key_type: `name`,
-            index_position: 1,
-            lower_bound: `${userName}`,
-            upper_bound: `${userName}`,
-            limit: 1
-          })
-        ]);
+        const globalRes = await this.getDacApi.eos.get_table_rows({
+          json: true,
+          code: this.vigorContractName,
+          scope: this.vigorContractName,
+          table: "globals",
+          limit: 1
+        });
 
         this.financialHealthGlobal = globalRes.rows[0];
-        this.financialHealthUser = userRes.rows[0];
       } catch (err) {
         console.error(err);
       } finally {
         this.loading = false;
       }
+    },
+    async refresh() {
+      try {
+        await Promise.all([
+          this.$store.dispatch("vigor/fetchUserInfo"),
+          this.getGlobalFinancialHealth()
+        ]);
+      } catch (err) {
+        console.error(err);
+      }
     }
   },
   async mounted() {
     await this.$store.dispatch("global/getDacApi");
-    await this.getFinancialHealth();
-  },
-  watch: {
-    getAccountName: function() {
-      this.getFinancialHealth();
-    }
+    await this.getGlobalFinancialHealth();
   }
 };
 </script>
