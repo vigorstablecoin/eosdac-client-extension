@@ -48,7 +48,7 @@
             />
 
             <q-tab-pane class="q-mt-lg" name="depositCollateral">
-              <backing-tab
+              <token-select-tab
                 tabTitle="Deposit Collateral"
                 :onSubmit="
                   args =>
@@ -58,7 +58,7 @@
               />
             </q-tab-pane>
             <q-tab-pane class="q-mt-lg" name="withdrawCollateral">
-              <backing-tab
+              <token-select-tab
                 tabTitle="Withdraw Collateral"
                 :onSubmit="
                   args =>
@@ -69,7 +69,7 @@
             </q-tab-pane>
 
             <q-tab-pane class="q-mt-lg" name="depositInsurance"
-              ><backing-tab
+              ><token-select-tab
                 tabTitle="Deposit Insurance"
                 :onSubmit="
                   args =>
@@ -78,7 +78,7 @@
                 :tokens="availableTokens"
             /></q-tab-pane>
             <q-tab-pane class="q-mt-lg" name="withdrawInsurance"
-              ><backing-tab
+              ><token-select-tab
                 tabTitle="Withdraw Insurance"
                 :onSubmit="
                   args =>
@@ -95,24 +95,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import BackingTab from "./backing-tab";
-
-const formatQuantity = ({ amountString, symbol }) => {
-  const { precision, symbolCode } = symbol;
-  let [pre, decimals] = String(amountString).split(`.`);
-
-  if (!pre) pre = `0`;
-  // pad with 0s to precision length, or cut off too much precision
-  decimals = ((decimals || ``) + `0`.repeat(precision)).slice(0, precision);
-
-  let result = `${pre}.${decimals}`;
-  result = `${result} ${symbolCode}`;
-  return result;
-};
+import TokenSelectTab from "./token-select-tab";
+import { formatQuantity } from "../../utils/asset";
 
 export default {
   components: {
-    BackingTab
+    TokenSelectTab
   },
   data() {
     return {

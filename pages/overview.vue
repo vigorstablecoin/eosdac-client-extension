@@ -3,6 +3,7 @@
     <div class="column gutter-sm q-mt-sm animate-fade">
       <financial-health />
       <backing />
+      <stablecoin />
     </div>
   </q-page>
 </template>
@@ -11,11 +12,13 @@
 import { mapGetters } from "vuex";
 import financialHealth from "../components/overview/financial-health";
 import backing from "../components/overview/backing";
+import stablecoin from "../components/overview/stablecoin";
 
 export default {
   components: {
     financialHealth,
-    backing
+    backing,
+    stablecoin
   },
   data() {
     return {};

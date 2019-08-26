@@ -36,32 +36,35 @@ export async function fetchAvailableTokens({
   commit,
   dispatch
 }) {
-  // TODO: fetch these extended assets from a list somewhere
-  // right now hard-coded in vigor's apply function
-  // https://github.com/vigorstablecoin/vigor/blob/dfe964029831ed9ece2f5e929ddbb1a6a1332c53/contracts/vigor/src/vigor.cpp#L896
-  const availableTokens = [
-    {
-      contract: `eosio.token`,
-      symbol: {
-        symbolCode: `EOS`,
-        precision: 4
-      }
-    },
-    {
-      contract: `vigtokenz111`,
-      symbol: {
-        symbolCode: `VIG`,
-        precision: 4
-      }
-    },
-    {
-      contract: `dummytokensx`,
-      symbol: {
-        symbolCode: `IQ`,
-        precision: 3
-      }
-    }
-  ];
+  const api = await dispatch("global/getDacApi", false, { root: true });
+  const vigorContractName = this._vm.$configFile.configFile.contracts.vigor
+    .name;
+
+  const coinstatResult = await api.eos.get_table_rows({
+    json: true,
+    code: vigorContractName,
+    scope: vigorContractName,
+    table: "coinstat",
+    index_position: 1,
+    lower_bound: 0
+  });
+
+  const availableTokens = coinstatResult.rows
+    .map(row => {
+      // reconstruct token from supply. assume issuer is also where the token is deployed
+      const [amount, symbolCode] = row.supply.split(` `);
+      const precision = amount.length - 1 - amount.indexOf(`.`);
+
+      return {
+        contract: row.issuer,
+        symbol: {
+          symbolCode,
+          precision
+        }
+      };
+    })
+    // make vigor token not available for backing
+    .filter(({ symbol: { symbolCode } }) => symbolCode !== `VIGOR`);
 
   commit("setAvailableTokens", availableTokens);
   return availableTokens;
