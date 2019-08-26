@@ -6,12 +6,12 @@
         style="height:45px"
       >
         <q-icon name="icon-type-2" size="32px" class="text-text2" />
-        <span class="q-title text-weight-light">Backing</span>
+        <span class="q-title text-weight-light">Stablecoin</span>
         <span style="width:32px">&nbsp;</span>
       </h3>
       <div class="q-pa-md row justify-center">
         <div v-if="!getAccountName" class="q-pa-md">
-          Please log in to deposit or withdraw collateral/insurance.
+          Please log in to borrow VIGOR or pay off debt.
         </div>
         <div v-else class="q-pa-md">
           <q-tabs
@@ -21,71 +21,39 @@
             text-color="primary-light"
             animated
             swipeable
+            v-if="vigorToken"
           >
             <q-tab
               class="q-py-none"
               slot="title"
-              name="depositCollateral"
-              label="Deposit Collateral"
+              name="borrow"
+              label="Borrow"
             />
             <q-tab
               class="q-py-none"
               slot="title"
-              name="withdrawCollateral"
-              label="Withdraw Collateral"
-            />
-            <q-tab
-              class="q-py-none"
-              slot="title"
-              name="depositInsurance"
-              label="Deposit Insurance"
-            />
-            <q-tab
-              class="q-py-none"
-              slot="title"
-              name="withdrawInsurance"
-              label="Withdraw Insurance"
+              name="payoffDebt"
+              label="Payoff Debt"
             />
 
-            <q-tab-pane class="q-mt-lg" name="depositCollateral">
+            <q-tab-pane class="q-mt-lg" name="borrow">
               <token-select-tab
-                tabTitle="Deposit Collateral"
+                tabTitle="Borrow"
                 :onSubmit="
-                  args =>
-                    this.onSubmit({ ...args, tabName: `depositCollateral` })
+                  args => this.onSubmit({ ...args, tabName: `borrow` })
                 "
-                :tokens="availableTokens"
+                :tokens="[vigorToken]"
               />
             </q-tab-pane>
-            <q-tab-pane class="q-mt-lg" name="withdrawCollateral">
+            <q-tab-pane class="q-mt-lg" name="payoffDebt">
               <token-select-tab
-                tabTitle="Withdraw Collateral"
+                tabTitle="Payoff Debt"
                 :onSubmit="
-                  args =>
-                    this.onSubmit({ ...args, tabName: `withdrawCollateral` })
+                  args => this.onSubmit({ ...args, tabName: `payoffDebt` })
                 "
-                :tokens="availableWithdrawCollateralTokens"
+                :tokens="[vigorToken]"
               />
             </q-tab-pane>
-
-            <q-tab-pane class="q-mt-lg" name="depositInsurance"
-              ><token-select-tab
-                tabTitle="Deposit Insurance"
-                :onSubmit="
-                  args =>
-                    this.onSubmit({ ...args, tabName: `depositInsurance` })
-                "
-                :tokens="availableTokens"
-            /></q-tab-pane>
-            <q-tab-pane class="q-mt-lg" name="withdrawInsurance"
-              ><token-select-tab
-                tabTitle="Withdraw Insurance"
-                :onSubmit="
-                  args =>
-                    this.onSubmit({ ...args, tabName: `withdrawInsurance` })
-                "
-                :tokens="availableWithdrawInsuranceTokens"
-            /></q-tab-pane>
           </q-tabs>
         </div>
       </div>
@@ -117,8 +85,7 @@ export default {
   data() {
     return {
       vigorContractName: this.$configFile.configFile.contracts.vigor.name,
-      loading: false,
-      tab: `depositCollateral`
+      tab: `borrow`
     };
   },
   computed: {
@@ -129,38 +96,9 @@ export default {
       userInfo: "vigor/getUserInfo",
       availableTokens: "vigor/getAvailableTokens"
     }),
-    availableWithdrawCollateralTokens() {
-      if (
-        !this.userInfo ||
-        !Array.isArray(this.userInfo.collateral) ||
-        !Array.isArray(this.availableTokens)
-      )
-        return [];
-
-      return this.availableTokens.filter(
-        ({ contract, symbol: { symbolCode } }) => {
-          return this.userInfo.collateral.some(balance => {
-            const [, _symbolCode] = balance.split(` `);
-            return symbolCode === _symbolCode;
-          });
-        }
-      );
-    },
-    availableWithdrawInsuranceTokens() {
-      if (
-        !this.userInfo ||
-        !Array.isArray(this.userInfo.insurance) ||
-        !Array.isArray(this.availableTokens)
-      )
-        return [];
-
-      return this.availableTokens.filter(
-        ({ contract, symbol: { symbolCode } }) => {
-          return this.userInfo.insurance.some(balance => {
-            const [, _symbolCode] = balance.split(` `);
-            return symbolCode === _symbolCode;
-          });
-        }
+    vigorToken() {
+      return this.$store.getters["vigor/getVigorToken"](
+        this.$configFile.configFile.contracts.vigor
       );
     }
   },
@@ -174,22 +112,19 @@ export default {
         });
 
         switch (tabName) {
-          case `withdrawCollateral`:
-          case `withdrawInsurance`: {
+          case `borrow`: {
             action = {
               account: this.vigorContractName,
               name: "assetout",
               data: {
                 usern: this.getAccountName,
                 assetout: quantity,
-                memo:
-                  tabName === `withdrawCollateral` ? `collateral` : `insurance`
+                memo: `borrow`
               }
             };
             break;
           }
-          case `depositCollateral`:
-          case `depositInsurance`: {
+          case `payoffDebt`: {
             action = {
               account: token.contract,
               name: "transfer",
@@ -197,8 +132,7 @@ export default {
                 from: this.getAccountName,
                 to: this.vigorContractName,
                 quantity,
-                memo:
-                  tabName === `depositCollateral` ? `collateral` : `insurance`
+                memo: `payoff debt`
               }
             };
             break;
@@ -216,16 +150,10 @@ export default {
         await this.$store.dispatch("vigor/fetchUserInfo");
       } catch (err) {
         console.error(err);
-      } finally {
-        this.loading = false;
       }
     }
   },
-  async mounted() {
-    this.loading = true;
-    await this.$store.dispatch("vigor/fetchAvailableTokens");
-    this.loading = false;
-  }
+  async mounted() {}
 };
 </script>
 

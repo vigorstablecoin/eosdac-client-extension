@@ -61,8 +61,11 @@ export default {
   },
   components: {},
   data() {
+    const selectedToken =
+      this.tokens.length > 0 ? this.tokens[0].symbol.symbolCode : ``;
+
     return {
-      selectedToken: ``,
+      selectedToken,
       amount: ``,
       vigorContractName: this.$configFile.configFile.contracts.vigor.name
     };
@@ -105,6 +108,13 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch("global/getDacApi");
+  },
+  watch: {
+    tokens() {
+      if (!this.selectedToken && this.tokens.length > 0) {
+        this.selectedToken = this.tokens[0].symbol.symbolCode;
+      }
+    }
   }
 };
 </script>
