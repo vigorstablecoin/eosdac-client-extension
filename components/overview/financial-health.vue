@@ -11,6 +11,12 @@
       </h3>
       <div class="relative-position q-pa-md row">
         <div class="col-xs-12 col-md-6 q-px-lg column align-center">
+          <span v-if="getAccountName" class="text-center text-bold">
+            Account Information
+          </span>
+          <span v-else class="text-center text-bold">
+            Log in to view user stats
+          </span>
           <div class="q-pa-sm q-mb-sm">
             <table-view
               v-if="financialHealthUser"
@@ -19,15 +25,12 @@
             />
             <div v-else class="q-mt-lg text-center">No user data found</div>
           </div>
-          <span class="text-center text-bold">{{
-            getAccountName || `Log in to view user stats`
-          }}</span>
         </div>
         <div class="col-xs-12 col-md-6 q-px-lg column align-center">
+          <span class="text-center text-bold">Global Community</span>
           <div class="bg-bg3 q-pa-sm q-mb-sm">
             <table-view class="col-grow" :json="financialHealthGlobal" />
           </div>
-          <span class="text-center text-bold">Global Community</span>
         </div>
 
         <q-btn
