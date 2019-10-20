@@ -42,18 +42,34 @@ sudo vi /etc/apt/sources.list.d/bintray.rabbitmq.list (then insert the following
 deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang
 sudo apt-get install update
 sudo apt-get install erlang
-sudo apt-get install rabbitmq-server
+sudo apt-get install erlang-nox
+sudo apt-get install rabbitmq-server=3.7.14-1
 
 #mongodb install, it's needed by the processor (not the filler)
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 68818C72E52529D4
 sudo echo "deb http://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
-sudo systemctl start mongod#uncomment a line in /etc/nginx/nginx.conf
+sudo systemctl start mongod
 server_names_hash_bucket_size 64;
 sudo systemctl enable mongod
 sudo netstat -plntu
-#then check it by typint mongo and you should get a shell, ctrl+d to exit
+
+
+apt-get install mongodb-server
+sudo service mongodb start
+show dbs
+use dacmain
+db.dropDatabase()
+#then check it by typing mongo and you should get a shell, ctrl+d to exit
+#use dacmain
+#show collections
+#db.multisigs.find()
+#db.multisigs.find({},field:true,field:true)
+#db.multisigs.find({proposal_name:"dlwqnweidimc"})
+
+#db.multisigs.find({action.account:"dacmultisig1",action.name:"proposed"})
+#https://stackoverflow.com/questions/16619598/sync-mongodb-via-ssh
 
 #eosio-statereceiver
 cd ~/eosio-statereceiver
@@ -88,11 +104,19 @@ CONFIG=mainnet node watchers/replay.js
 #for jungle: eosio.msig in eosdac-filler/jungle.config.js should be eosiomsigold It’s the old version of eosio.msig which is deployed on jungle
 
 #you might want to enable the management plugin, to clear the queue, multithreading
-http://api-dac.vig.ai:15672/
+sudo rabbitmq-plugins enable rabbitmq-management
+sudo rabbitmq-plugins enable rabbitmq-shovel
+sudo rabbitmq-plugins enable rabbitmq-shovel-management
+sudo lsof -i -P -n | grep LISTEN
+sudo rabbitmqctl list_permissions
+sudo rabbitmqctl set_user_tags ubuntu administrator
+sudo rabbitmqctl set_permissions -p /ubuntu ".*" ".*" ".*"
+http://api-dac.vigor.ai:15672/ # see the proccess list in the queue, can purge them if desired
+# the filler will populate the queue in rabbitmq, then filler will run each process in the queue and write to mongodb
 $ cat /etc/rabbitmq/enabled_plugins
 [rabbitmq_management,rabbitmq_shovel,rabbitmq_shovel_management].
 https://www.rabbitmq.com/passwords.html
-rabbitmqctl
+
 
 #eosdac-client-extension
 cd ~/eosdac-client/src
@@ -118,8 +142,9 @@ server_names_hash_bucket_size 64;
 sudo ln -s /etc/nginx/sites-available/api-dac.vigor.ai /etc/nginx/sites-enabled/
 sudo rm /etc/nginx/sites-enabled/default
 sudo certbot --nginx -d api-dac.vigor.ai
+CONFIG=mainnet ./eosdac-filler.js -r -s 56700000
 
-#serve up https://vigor.ai
+#serve up https://vigor.aiCONFIG=mainnet ./eosdac-filler.js -r -s 56700000
 sudo mkdir -p /var/www/vigor.ai/dist/spa-mat
 sudo chmod -R 755 /var/www/.vigor.ai
 #create a config file: 
@@ -164,3 +189,79 @@ Custom	TCP	15672 (rabbitmq management plugin)
 
 docs url?
 https://api-jungle.eosdac.io/v1/eosdac/docs/index.html
+
+
+#small patch for buttons on mainpage, add these lines:
+src/plugins/config-loader.js
+case "external":
+        return this.configFile.external;
+
+put these pdf files into dist/spa-mat/
+wget https://vig.ai/vigorstablecoin.pdf
+wget https://vig.ai/vigor.pdf
+
+change this to false to enable claim all
+https://github.com/eosdac/eosdac-client/blob/dev/src/pages/custodian/my-payments.vue#L93
+
+refresh tweak
+change the 250 to 750 directly in your client source
+https://github.com/eosdac/eosdac-client/blob/dev/src/store/user/actions.js#L237 
+
+change default number of candidates on main page to 48
+https://github.com/eosdac/eosdac-client/blob/master/src/pages/vote-custodians.vue#L289
+
+launch dac contract and unlock.
+vi ecosystem.config.js and comment out eosdac-filler-mainnet (will uncomment later)
+CONFIG=mainnet ./eosdac-filler.js -r -s 56700000
+pm2 start (runs the processor and api)
+http://api-dac.vigor.ai:15672/ # watch and see the filler populate the queue, can purge if you need, the propcessor works on each process and writes to mongod
+#mongo
+#use dacmain
+#show collection
+# after the filler/processor syncs to LIB last irrev block, then 
+# uncomment eosdac-filler-mainnet in ecosystem.config.js
+# kill the filler
+# pm2 delete all
+# pm2 start
+# pm2 show
+
+#ws://as1.eosdac.io:8080
+
+which state history endpoint are you using?
+our as1 server recently died and i have restored it from 1.8 snapshots which means it is not compatible with the eosio-statereceiver
+there is a 1.8 tag on eosio-statereceiver, we have another <1.8 state history on ex2
+i think it is best that you update though, we dont have long before we all have to be on 1.8
+f
+stuffed shirt | vig.aiadmin
+ws://as1.eosdac.io:8080
+
+Michael Yeates
+yeah, thats why
+go to the filler/eosio-statehistory folder
+git pull, then checkout the 1.8 tag
+
+stuffed shirt | vig.aiadmin
+right ok
+
+Michael Yeates
+then run npm there and also in the filler folder
+then stop both pm2 processes (filler and processor)
+you should be able to restart the filler and it will pick up where it left off
+check the logs are happy and sending to the queue, then start the processor and check logs
+
+stuffed shirt | vig.aiadmin
+ok
+
+# eosio.msig approval table...suddenly it has started using approvals2 table, which has a differnt abi
+# here is the fix for that:
+https://github.com/vigorstablecoin/eosdac-api-extension
+
+use these two customized files:
+eosdac-api/watchers/multisig_proposals.js
+eosdac-api/handlers/delta-handler.js
+
+then from the eosdac-api directory:
+pm2 delete all
+pm2 start
+CONFIG=mainnet node ./watchers/replay.js
+
