@@ -5,8 +5,8 @@
     "noscript": "To view this webpage you need to have javascript enabled"
   },
   "index": {
-    "description_p1": "VIGOR stablecoin defi platform is a decentralized autonomous community which means it is owned and operated by the token holders who agree to the constitution and register as members of the community.",
-    "description_p2": "Join us by signing the constitution and ask us on telegram for a VIG token for staking as a candidate. Then you can build and market your profile; the top candidates by vote become custodians and can receive a voter token and ability to claim VIG tokens.",
+    "description_p1": "Vigor is a decentralized autonomous community that is building and deploying the open source VIGOR stablecoin platform on the EOS blockchain according to the whitepaper, powered by the VIG token. Join us in building it. We appreciate software developers helping out on our github repo, financial math and econometrics experts are super fun to have around, marketers and media folks are great, legal beagles are a real prize and can help build our international legal framework, community and social media leaders and followers are welcome, integrations, product design, and yes glass blowing is welcome. Right now Vigor is a community of upstarters, builders with a sense of endowment in the present work, with a software product deployed to testnet. But soon the user community will become most important as they will wield the electoral vote.",
+    "description_p2": "Joining is simple: 1.) sign the constitution 2.) ask us on telegram for a free stake token and fill out a profile for the voters 3.) stake and register as candidate. Every candidate can claim VIG tokens every day. Higher voted candidates claim more VIG, the top 21 candidates by vote each claim an equal maximum amount of VIG and become custodian for the day.",
     "discord_description": "Talk to us on telegram",
     "eosdac": "whitepaper",
     "error_occured": "Something went wrong!",

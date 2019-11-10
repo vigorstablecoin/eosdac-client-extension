@@ -1,6 +1,6 @@
 {
-    "dacName": "Vigor",
-    "dacScope": "vig",
+    "dacName": "vigor",
+    "dacScope": "vigor",
     "contracts": {
         
         "token": {
@@ -70,7 +70,7 @@
 
 
     "api": {
-        "default_eos_node": "https://proxy.eosnode.tools:443",
+        "default_eos_node": "https://api.eossweden.se",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "https://toolkit-api.eosdac.io",
         "memberclient_state_api": "https://api-dac.vigor.ai/v1/eosdac",
