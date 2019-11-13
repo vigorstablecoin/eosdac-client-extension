@@ -70,7 +70,7 @@
 
 
     "api": {
-        "default_eos_node": "https://api.eossweden.se",
+        "default_eos_node": "https://eosbp.atticlab.net",
         "bpnodes": "https://eosdac.io/topnodes.json",
         "memberclient": "https://toolkit-api.eosdac.io",
         "memberclient_state_api": "https://api-dac.vigor.ai/v1/eosdac",
